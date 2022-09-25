@@ -10,7 +10,10 @@ c = !"git clone"
 co = !"git commit -s -S"
 d = !"git diff"
 cosub = !"git commit -m \"Update submodules\" -m \"$(git diff --staged --submodule=log HEAD)\""
-
+[user]
+	name = Darrel Griët
+	email = dgriet@gmail.com
+	signingkey = AEC0C86DA5BFC9A2FA974689B20ADEFE1E03AA75
 [core]
 	editor = nano
 	autocrlf = input
