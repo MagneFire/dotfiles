@@ -1,0 +1,47 @@
+[alias]
+lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+lg = !"git lg1"
+l = !"git lg"
+st = !"git status"
+s = !"git st"
+a = !"git add -p"
+c = !"git clone"
+co = !"git commit -s -S"
+d = !"git diff"
+cosub = !"git commit -m \"Update submodules\" -m \"$(git diff --staged --submodule=log HEAD)\""
+
+[core]
+	editor = nano
+	autocrlf = input
+	pager = delta
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+[delta]
+    features = decorations
+#    side-by-side = true
+    line-numbers = true
+[delta "interactive"]
+    keep-plus-minus-markers = false
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+[color]
+	ui = auto
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg2
+[format]
+	signoff = true
+[init]
+	templatedir = ~/.git-templates
+[submodule]
+	recurse = true
+[pull]
+	ff = only
