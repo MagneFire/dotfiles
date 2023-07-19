@@ -9,6 +9,7 @@ a = !"git add -p"
 c = !"git clone"
 co = !"git commit -s -S"
 d = !"git diff"
+f = !"git fetch --all --tags --prune"
 cosub = !"git commit -m \"Update submodules\" -m \"$(git diff --staged --submodule=log HEAD)\""
 [user]
 	name = Darrel Griët
@@ -48,3 +49,11 @@ cosub = !"git commit -m \"Update submodules\" -m \"$(git diff --staged --submodu
 	recurse = true
 [pull]
 	ff = only
+[merge]
+	ff = only
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = dgriet@gmail.com
+	smtpServerPort = <PORT>
+	smtpPass = <PASS>
