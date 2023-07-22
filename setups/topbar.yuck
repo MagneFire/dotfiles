@@ -52,7 +52,6 @@
                 :onclick "${EWW_CONFIG_DIR}/scripts/launcher toggle_menu quicksettings")
         (box 
             :space-evenly false
-            (notifications_center :valign "fill" :halign "end")
             (quicksettings :valign "fill" :halign "end")
             (eventbox
                     :hexpand true
