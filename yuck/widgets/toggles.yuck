@@ -43,7 +43,7 @@
 (defwidget small_toggle_dnd [] (small_toggle   
     :state {notifications.dnd.state}
     :icon  {notifications.dnd.icon}
-    :toggle_action "${EWW_CONFIG_DIR}/scripts/notifications toggle"))
+    :toggle_action ""))
 
 (defwidget small_toggle_mute [] (small_toggle
     :state {volume.mute.state}

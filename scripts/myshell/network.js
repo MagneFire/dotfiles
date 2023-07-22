@@ -47,6 +47,7 @@ class Network extends GObject.Object{
         }
 
         this._activeAp();
+        console.log("_getClient!")
         this._sync();
     }
 
@@ -62,7 +63,8 @@ class Network extends GObject.Object{
         if(this._ap) this._ap.disconnect(this._apBind);
         this._ap = this._wifi?.get_active_access_point();
         if(!this._ap) return;
-        this._apBind = this._ap.connect('notify::strength', this._sync.bind(this));
+        // this._apBind = this._ap.connect('notify::strength', this._sync.bind(this));
+        // console.log("_activeAp!")
         this._sync();
     }
 
@@ -73,6 +75,7 @@ class Network extends GObject.Object{
 
         const primary_type = mainConnection?.type || null; // 802-11-wireless ; 802-3-ethernet
         const internet = this._client.connectivity === NM.ConnectivityState.FULL;
+        console.log("NETWORK!")
 
         let wifi = {
             primary: primary_type === '802-11-wireless',

@@ -67,10 +67,6 @@ class MprisPlayer extends GObject.Object {
         );
         if (!this._proxy.g_name_owner)
             this.close();
-
-        this._updateState();
-        this._cacheCoverArt();
-        this.emit('ready');
     }
 
     _updateState() {

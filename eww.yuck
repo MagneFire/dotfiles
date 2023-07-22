@@ -6,8 +6,8 @@
 (defvar     notifications   "{}")
 (defvar     apps            "{}")
 
-(defpoll memory :interval "3s" "scripts/memory")
-(defpoll cpu :interval "3s" "scripts/cpu")
+(defpoll memory :interval "5s" "scripts/memory")
+(defpoll cpu :interval "5s" "scripts/cpu")
 
 (deflisten  window      `scripts/hyprland window`)
 (deflisten  workspaces  `scripts/hyprland workspaces`)
@@ -32,5 +32,4 @@
 
 (include "./yuck/widgets.yuck")
 (include "./yuck/windows.yuck")
-; (include "./setups/leftbar.yuck")
 (include "./setups/topbar.yuck")

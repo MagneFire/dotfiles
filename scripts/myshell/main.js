@@ -2,7 +2,6 @@ import { Network  } from './network.js'
 import { Media } from './media.js'
 import { Battery } from './battery.js'
 import { Bluetooth } from './bluetooth.js'
-// import { Notifications } from './notifications.js'
 import { Apps } from './apps.js'
 import { GObject, Gio, GLib, Gtk } from './lib.js'
 
@@ -50,7 +49,6 @@ class App extends Gtk.Application{
         this._stdout = stdout;
         this._json = {};
 
-        // this._notifications = new Notifications(fg_color);
         this._battery = new Battery();
         this._network = new Network();
         this._bluetooth = new Bluetooth();
@@ -62,14 +60,12 @@ class App extends Gtk.Application{
 
     vfunc_activate() {
         this.hold();
-        // 'notifications', 
         [ 
             'battery', 'network',
             'bluetooth', 'apps', 'media'
         ]
         .forEach(m => this._output(this[`_${m}`].json, m));
 
-        // this._notifications.connect('sync', o => this._output(o.json, 'notifications'));
         this._battery.connect('sync', o => this._output(o.json, 'battery'));
         this._network.connect('sync', o => this._output(o.json, 'network'));
         this._bluetooth.connect('sync', o => this._output(o.json, 'bluetooth'));
@@ -78,8 +74,6 @@ class App extends Gtk.Application{
         this._apps.connect('sync', o => this._output(o.json, 'apps'));
         this._apps.init();
 
-        // this._media.connect('sync', o => this._output(o.json, 'media'));
-        // this._media.connect('positions', o => this._output(o.positions, 'media_positions'));
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, TICK_INTERVAL, () => this._media.getPositions() );
     }
 
