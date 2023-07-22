@@ -49,10 +49,8 @@
             :class "toggles"
             :orientation "h"
             (box
-                (small_toggle_dnd)
                 (small_toggle_mute)
-                (small_toggle_dark_mode))
-            (box 
+                (small_toggle_dark_mode) 
                 (small_toggle_power)
                 (small_toggle_bt)
                 (small_toggle_network))))

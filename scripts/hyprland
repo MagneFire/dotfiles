@@ -8,10 +8,6 @@ window_class() {
 
 window_title() {
     echo `hyprctl activewindow -j | jq --raw-output .title`
-    # echo `hyprctl activewindow -j | jq --raw-output .title` | sed 's/\(.\{48\}\).*/\1.../'
-    # echo 'some long string value' | sed 's/\(.\{15\}\).*/\1.../'
-    # title=`hyprctl activewindow -j | jq --raw-output .title`
-    # echo "${title:0:48}"
 }
 
 workspaces (){

@@ -96,12 +96,12 @@
          :valign "center"
          :space-evenly "false"
          (circular-progress :class "cpu"
-                            :tooltip "using ${cpu}% cpu"
-                            :value cpu
+                            :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
+                            :value {EWW_CPU.avg}
                             :thickness 12)
          (circular-progress :class "mem"
-                            :tooltip "using ${memory}% ram"
-                            :value memory
+                            :tooltip "using ${round(EWW_RAM.used_mem / EWW_RAM.total_mem * 100, 0)}% ram"
+                            :value {EWW_RAM.used_mem / EWW_RAM.total_mem * 100}
                             :thickness 12)))
 
 (defvar bluetooth_reveal false)
