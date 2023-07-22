@@ -104,6 +104,8 @@
                             :value {EWW_RAM.used_mem / EWW_RAM.total_mem * 100}
                             :thickness 12)))
 
+(defvar memory_reveal true)
+(defvar cpu_reveal true)
 (defvar bluetooth_reveal false)
 (defvar bt_speaker_reveal false)
 (defvar mute_reveal false)
@@ -117,7 +119,29 @@
     :orientation orientation
     :space-evenly false
     (systray :pack-direction "ltr")
-    (cpu-and-mem)
+
+    (controls_icon
+        :orientation orientation
+        :transition {orientation == "v" ? "slideup" : "slideleft"}
+        :control "memory"
+        :reveal memory_reveal
+        :keep_open true
+        :visible true
+        :value "${round(EWW_RAM.used_mem / EWW_RAM.total_mem * 100, 0)}%"
+        :icon "󰍛"
+        :style ""
+        :angle 0)
+    (controls_icon
+        :orientation orientation
+        :transition {orientation == "v" ? "slideup" : "slideleft"}
+        :control "cpu"
+        :reveal cpu_reveal
+        :keep_open true
+        :visible true
+        :value "${round(EWW_CPU.avg, 0)}%"
+        :icon "󰘚"
+        :style ""
+        :angle 0)
     (controls_icon
         :orientation orientation
         :keep_open false

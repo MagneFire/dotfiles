@@ -9,8 +9,15 @@
         @if $orientation == 'v' { > * { min-height: 80px; } }
         @if $orientation == 'h' { > * { min-width: 90px; } }
     }
+    .memory, .cpu {
+        color: white;
+    }
     .icon{
         margin: .1em 0;
+        color: white;
+        &.memory, &.cpu, &.battery {
+            padding-left: 4px;
+        }
         &.battery{
             &.low{ color: $destructive; }
             &.charging{ color: $succes; }
