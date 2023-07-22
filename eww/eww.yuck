@@ -6,9 +6,6 @@
 (defvar     notifications   "{}")
 (defvar     apps            "{}")
 
-(defpoll memory :interval "5s" "scripts/memory")
-(defpoll cpu :interval "5s" "scripts/cpu")
-
 (deflisten  window      `scripts/hyprland window`)
 (deflisten  workspaces  `scripts/hyprland workspaces`)
 
@@ -27,8 +24,8 @@
 (defpoll    date        :interval "5s" `date "+%b. %d. %A"`)
 (defpoll    uptime      :interval "60s" "uptime | awk '{print $3}' | tr ',' ' '")
 
-(defvar real_name "Demeter")
-(defvar user_name "@Aylur")
+(defvar real_name "Darrel Griët")
+(defvar user_name "@MagneFire")
 
 (include "./yuck/widgets.yuck")
 (include "./yuck/windows.yuck")
