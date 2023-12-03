@@ -11,6 +11,7 @@ co = !"git commit -s -S"
 d = !"git diff"
 f = !"git fetch --all --tags --prune"
 cosub = !"git commit -m \"Update submodules\" -m \"$(git diff --staged --submodule=log HEAD)\""
+co-author = "!co_authored_commit() { usage='usage: git co-author --author \"name <email>\"\n'; while [ \"${#}\" -gt 0 ]; do case \"${1}\" in --author) shift; co_author=\"Co-authored-by: \"${1}\"\n\"; co_authors=\"${co_authors}${co_author}\"; shift;; *) shift;; esac; done; if [ -z \"${co_authors}\" ]; then echo ${usage}; exit 1; fi; co_authored_message=\"\n\n${co_authors}\"; git commit --amend --message=\"$(git show --format=%B --no-patch HEAD)\" --message=\"${co_authored_message}\"; }; co_authored_commit"
 [user]
 	name = Darrel Griët
 	email = dgriet@gmail.com
