@@ -58,3 +58,5 @@ co-author = "!co_authored_commit() { usage='usage: git co-author --author \"name
 	smtpUser = dgriet@gmail.com
 	smtpServerPort = <PORT>
 	smtpPass = <PASS>
+[rebase]
+	autoStash = true
