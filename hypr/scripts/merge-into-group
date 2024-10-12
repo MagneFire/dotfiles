@@ -1,0 +1,33 @@
+#!/bin/bash
+WORKSPACE=`hyprctl -j activeworkspace | jq -r '"\(.id)"'`
+
+WINDOWS=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$WORKSPACE')) | "\(.pid)"'`
+
+GROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$WORKSPACE')) | select(.grouped | length > 0) | "\(.grouped)"'`
+
+if [[ -z "$GROUPED" ]]; then
+    # Activate group on active window
+    hyprctl dispatch togglegroup
+fi
+
+function group() {
+    for i in ${WINDOWS[@]}
+        do
+        hyprctl dispatch cyclenext
+
+        hyprctl dispatch moveintogroup l
+        hyprctl dispatch moveintogroup r
+        hyprctl dispatch moveintogroup u
+        hyprctl dispatch moveintogroup d
+    done
+}
+
+while true; do
+    HAS_UNGROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$WORKSPACE')) | select(.grouped | length == 0) | "\(.grouped)"'`
+    if [[ -z "$HAS_UNGROUPED" ]]; then
+        echo "All windows grouped"
+        exit
+    fi
+
+    group
+done
