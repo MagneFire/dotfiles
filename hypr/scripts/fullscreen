@@ -1,0 +1,14 @@
+#!/bin/bash
+
+windows=`hyprctl activeworkspace -j | jq '.windows'`
+hasfullscreen=`hyprctl activeworkspace -j | jq '.hasfullscreen'`
+
+echo $windows
+echo $hasfullscreen
+
+if [ $windows -lt 2 ]; then
+  echo "Ignoring fullscreen request"
+  exit
+fi
+
+hyprctl dispatch fullscreen 1
