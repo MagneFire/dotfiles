@@ -1,0 +1,32 @@
+#!/bin/bash
+
+function list_geometry () {
+    if [ "$1" = focused ]; then
+        hyprctl -j activewindow | jq -r '"\(.size[0])x\(.size[1])+\(.at[0])+\(.at[1])"'
+    else
+        hyprctl -j activeworkspace | jq -r '"screen\(.monitorID)"'
+    fi
+}
+
+function shot () {
+    if [ ! -z "$1" ]; then
+        flameshot gui --region $1
+    else
+        flameshot gui
+    fi
+}
+
+FOCUSED=`list_geometry focused`
+ALL=`list_geometry`
+
+case $1 in
+  '' )
+    shot
+    ;;
+  '-M' )
+    shot "${ALL}"
+    ;;
+  '-W' )
+    shot "${FOCUSED}"
+    ;;
+esac
