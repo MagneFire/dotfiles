@@ -7,6 +7,9 @@ scripts=$config/scripts
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
+# GNOME like OSD for brightness and volume
+swayosd-server &
+
 # Idle daemon
 hypridle &
 
