@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+~/.config/hypr/scripts/lock &
+
+sleep 1
+
+systemctl sleep
