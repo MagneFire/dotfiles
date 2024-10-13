@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+monitor_count=`hyprctl monitors -j | jq length`
+
+if [[ $monitor_count -gt 1 ]]; then
+    # Do not suspend
+    echo $1 "Not suspending"
+    exit
+fi
+
+echo "Suspending"
+
+~/.config/hypr/scripts/suspend
