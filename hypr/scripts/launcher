@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wofi --show drun --conf ~/.config/hypr/scripts/launcher.config --style ~/.config/hypr/scripts/launcher.css --hide-scroll --cache-file /dev/null
