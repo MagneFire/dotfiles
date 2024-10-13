@@ -1,0 +1,146 @@
+@import "colors-waybar.css";
+
+* {
+  border: none;
+  font-family: 'Fira Code', 'Symbols Nerd Font Mono';
+  font-size: 16px;
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+}
+
+/* All elements */
+#clock,
+#battery,
+#cpu,
+#window,
+#workspaces,
+#custom-sep,
+#custom-playerctl,
+#cava
+{
+    background: @background;
+    opacity: .8;
+    color: @foreground;
+    border-radius: 20px;
+}
+
+#bluetooth,
+#backlight,
+#network,
+#pulseaudio,
+#tray,
+#custom-maximized,
+#custom-notifications,
+#custom-powermenu {
+    opacity: .8;
+    color: @foreground;
+}
+
+#cpu,
+#bluetooth,
+#backlight,
+#custom-maximized,
+#custom-notifications,
+#pulseaudio,
+#custom-sep,
+#network,
+#custom-powermenu {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+window#waybar {
+    background-color: transparent;
+}
+
+#workspaces button {
+    color: @color6;
+    font-weight: bolder;
+    transition: all 0.2s ease-in-out;
+}
+
+#workspaces button.active{
+    color: @foreground;
+    transition: all 0.2s ease-in-out;
+    margin: 0 6px;
+}
+
+#workspaces button:hover {
+    background: #101317;
+    border-radius: 20px;
+    text-shadow: #e2e0ec 0 0 0px;
+}
+
+#clock label{
+    color: @foreground;
+    font-weight:  bolder;
+    font-size: 20px;
+}
+
+#battery.charging {
+    color: #ECE0A8;
+}
+
+#battery.warning:not(.charging) {
+    color: #ECE0A8;
+}
+
+#battery.critical:not(.charging) {
+    color: #E97193;
+}
+
+#workspaces {
+    font-weight: bolder;
+    margin: 5px 5px 0 5px;
+}
+
+
+#tray {
+    padding: 0px 15px 0px 0px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+#cpu,
+#pulseaudio,
+#clock,
+#custom-playerctl,
+#window,
+#battery,
+#cava,
+#custom-powermenu {
+    font-size: 15px;
+    font-weight: bolder;
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    margin: 5px 5px 0 5px;
+}
+
+#bluetooth,
+#custom-maximized,
+#backlight,
+#network {
+    margin: 5px 0 0 0;
+}
+
+#custom-notifications {
+    border-radius: 20px 0 0 20px;
+    border-right: 0;
+    padding: 5px 10px 5px 10px;
+    margin: 5px 0 0 5px;
+}
+
+#custom-powermenu {
+    border-radius: 0 20px 20px 0;
+    border-left: 0;
+    padding: 3px 15px 5px 5px;
+    margin: 5px 5px 0 0;
+}

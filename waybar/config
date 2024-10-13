@@ -1,0 +1,105 @@
+{
+    "layer": "top",
+    "position": "top",
+    "output": "eDP-1",
+    "modules-left": [
+        "hyprland/workspaces",
+        "custom/playerctl"
+    ],
+    "modules-right": [
+        "battery",
+        "cpu",
+        "custom/notifications",
+        "custom/maximized",
+        "tray",
+        "custom/powermenu",
+        "clock"
+    ],
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "format-icons": {
+            "default": ""
+        },
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "on-click": "activate",
+        "sort-by-number": true,
+        "all-outputs": true
+    },
+    "bluetooth": {
+        "format": "",
+        "on-click": "blueman-manager"
+    },
+    "custom/maximized": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/maximized.sh"
+    },
+    "custom/notifications": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/notification.sh",
+        "on-click": "swaync-client -t -sw"
+    },
+    "custom/playerctl": {
+        "format": "{icon}  <span>{}</span>",
+        "return-type": "json",
+        "max-length": 50,
+        "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
+        "on-click-middle": "playerctl play-pause",
+        "on-click": "playerctl previous",
+        "on-click-right": "playerctl next",
+        "format-icons": {
+            "Playing": "<span></span>",
+            "Paused": "<span></span>"
+        }
+    },
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10
+    },
+    "clock": {
+        "format": "{:%d %B %R}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}",
+        "actions": {
+            "on-click": "mode"
+        }
+    },
+    "cpu": {
+        "format": "  {usage}%",
+        "tooltip": false
+    },
+    "backlight": {
+        "on-scroll-up": "light -A 12",
+        "on-scroll-down": "light -U 12",
+        "format": "{icon}",
+        "format-icons": [
+            "󰃞 ",
+            "󰃝 ",
+            "󰃟 ",
+            "󰃠 "
+        ]
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-full": "󰁹 {capacity}%",
+        "format-icons": [
+            "󰁺",
+            "󰁼",
+            "󰁾",
+            "󰂀",
+            "󰁹"
+        ]
+    },
+    "custom/powermenu": {
+        "format": "",
+        "on-click": "~/.config/hypr/scripts/powermenu.sh",
+        "tooltip": false
+    }
+}
