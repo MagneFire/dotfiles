@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+notify="notify-send -r 1 -u normal "
+
+case `swaync-client -D` in
+    true)
+        swaync-client -df
+        $notify -i notification-disabled-symbolic -a "System" "Do Not Disturb" "Turned Off" &
+        ;;
+    false)
+        $notify -i notification-symbolic -a "System" "Do Not Disturb" "Active"&
+        # the delay is here because pausing notifications immediately hides
+        # the ones present on your desktop; we also run dunstctl close so
+        # that the notification doesn't reappear on unpause
+        (sleep 3 && swaync-client -C && swaync-client -dn)
+        ;;
+esac
