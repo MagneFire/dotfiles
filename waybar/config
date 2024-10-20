@@ -1,6 +1,8 @@
-{
+[{
     "layer": "top",
     "position": "top",
+    "height": 37,
+    "name": "mainbar",
     "output": "eDP-1",
     "modules-left": [
         "hyprland/workspaces",
@@ -24,8 +26,7 @@
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "on-click": "activate",
-        "sort-by-number": true,
-        "all-outputs": true
+        "sort-by-number": true
     },
     "bluetooth": {
         "format": "",
@@ -103,4 +104,14 @@
         "on-click": "~/.config/hypr/scripts/powermenu.sh",
         "tooltip": false
     }
-}
+},
+{
+    "layer": "top",
+    "position": "top",
+    "height": 1,
+    "name": "secondary-bar",
+    "output": "!eDP-1",
+    "modules-center": [
+        "hyprland/workspaces#secondary"
+    ]
+}]

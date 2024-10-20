@@ -1,9 +1,18 @@
 @import "colors-waybar.css";
 
-* {
+.mainbar * {
+  min-height: 0;
   border: none;
   font-family: 'Fira Code', 'Symbols Nerd Font Mono';
   font-size: 16px;
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+}
+
+.secondary-bar * {
+  min-height: 0;
+  border: none;
+  font-family: 'Fira Code', 'Symbols Nerd Font Mono';
+  font-size: 0;
   font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
 }
 
@@ -72,6 +81,20 @@ window#waybar {
     text-shadow: #e2e0ec 0 0 0px;
 }
 
+#workspaces.secondary {
+    margin: 0 0 -6px 0;
+    opacity: .8;
+    color: @foreground;
+    border-radius: unset;
+    font-weight: bolder;
+    transition: all 0.2s ease-in-out;
+}
+
+#workspaces.secondary button.active {
+    background-color: @foreground;
+    border-radius: 0;
+}
+
 #clock label{
     color: @foreground;
     font-weight:  bolder;
@@ -94,7 +117,6 @@ window#waybar {
     font-weight: bolder;
     margin: 5px 5px 0 5px;
 }
-
 
 #tray {
     padding: 0px 15px 0px 0px;
