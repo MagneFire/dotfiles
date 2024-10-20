@@ -43,7 +43,7 @@
         "on-click": "swaync-client -t -sw"
     },
     "custom/playerctl": {
-        "format": "{icon}  <span>{}</span>",
+        "format": "{icon} <span>{0}</span>",
         "return-type": "json",
         "max-length": 50,
         "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
