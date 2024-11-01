@@ -97,6 +97,11 @@ window#waybar {
     border-radius: 0;
 }
 
+#workspaces.secondary button {
+    background-color: @color5;
+    border-radius: 0;
+}
+
 #clock label{
     color: @foreground;
     font-weight:  bolder;
