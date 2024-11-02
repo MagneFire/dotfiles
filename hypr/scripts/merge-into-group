@@ -1,33 +1,44 @@
 #!/bin/bash
-WORKSPACE=`hyprctl -j activeworkspace | jq -r '"\(.id)"'`
 
-WINDOWS=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$WORKSPACE')) | "\(.pid)"'`
+CURRENT_WORKSPACE=`hyprctl -j activeworkspace | jq -r '"\(.id)"'`
 
-GROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$WORKSPACE')) | select(.grouped | length > 0) | "\(.grouped)"'`
+GROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length > 0) | "\(.grouped)"'`
 
 if [[ -z "$GROUPED" ]]; then
     # Activate group on active window
     hyprctl dispatch togglegroup
 fi
 
-function group() {
-    for i in ${WINDOWS[@]}
-        do
-        hyprctl dispatch cyclenext
-
-        hyprctl dispatch moveintogroup l
-        hyprctl dispatch moveintogroup r
-        hyprctl dispatch moveintogroup u
-        hyprctl dispatch moveintogroup d
-    done
-}
-
 while true; do
-    HAS_UNGROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$WORKSPACE')) | select(.grouped | length == 0) | "\(.grouped)"'`
+    HAS_UNGROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length == 0) | "\(.grouped)"'`
     if [[ -z "$HAS_UNGROUPED" ]]; then
         echo "All windows grouped"
         exit
     fi
 
-    group
+    hyprctl dispatch cyclenext
+
+    IS_FOCUSED_GROUPED=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | select(.grouped | length == 0) | "\(.grouped)"'`)
+    if [[ -z "$IS_FOCUSED_GROUPED" ]]; then
+        echo "Current window is already grouped, skipping"
+        continue
+    fi
+
+    # Get grouped geometry by getting all grouped windows then get the last focused window on the stack to fix geometry consistency issues.
+    GROUP_GEOMETRY=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length > 0)' | jq -s 'limit(1; sort_by(.focusHistoryID)[]) | .at[0], .at[1]'`)
+
+    CURRENT_WORKSPACE_GEOMETRY=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | .at[0], .at[1]'`)
+
+    if [ ${CURRENT_WORKSPACE_GEOMETRY[0]} -gt ${GROUP_GEOMETRY[0]} ]; then
+        hyprctl dispatch moveintogroup l
+    else
+        hyprctl dispatch moveintogroup r
+    fi
+
+    if [ ${CURRENT_WORKSPACE_GEOMETRY[1]} -gt ${GROUP_GEOMETRY[1]} ]; then
+        hyprctl dispatch moveintogroup u
+    else
+        hyprctl dispatch moveintogroup d
+    fi
+
 done
