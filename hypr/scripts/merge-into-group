@@ -1,4 +1,5 @@
 #!/bin/bash
+# Merge all windows on the current workspace into a group.
 
 CURRENT_WORKSPACE=`hyprctl -j activeworkspace | jq -r '"\(.id)"'`
 
