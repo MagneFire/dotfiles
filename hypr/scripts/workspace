@@ -3,7 +3,7 @@
 
 CURRENT_MONITOR=`hyprctl -j activeworkspace | jq -r '"\(.monitor)"'`
 
-WORKSPACES=(`hyprctl -j workspaces | jq -r ".[] | select(.monitor | contains(\"$CURRENT_MONITOR\")) | \"\(.id)\"" | sort`)
+WORKSPACES=(`hyprctl -j workspaces | jq -r ".[] | select(.monitor | contains(\"$CURRENT_MONITOR\")) | \"\(.id)\"" | sort -n`)
 
 TARGET_INDEX=$(($1 - 1))
 
