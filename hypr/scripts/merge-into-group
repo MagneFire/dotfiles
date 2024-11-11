@@ -26,20 +26,28 @@ while true; do
     fi
 
     # Get grouped geometry by getting all grouped windows then get the last focused window on the stack to fix geometry consistency issues.
-    GROUP_GEOMETRY=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length > 0)' | jq -s 'limit(1; sort_by(.focusHistoryID)[]) | .at[0], .at[1]'`)
+    GROUP_GEOMETRY=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length > 0)' | jq -s 'limit(1; sort_by(.focusHistoryID)[]) | .at[0], .at[1], .size[0], .size[1]'`)
 
-    CURRENT_WORKSPACE_GEOMETRY=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | .at[0], .at[1]'`)
+    CURRENT_WORKSPACE_GEOMETRY=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | .at[0], .at[1], .size[0], .size[1]'`)
 
-    if [ ${CURRENT_WORKSPACE_GEOMETRY[0]} -gt ${GROUP_GEOMETRY[0]} ]; then
-        hyprctl dispatch moveintogroup l
-    else
+    if [ $((${CURRENT_WORKSPACE_GEOMETRY[0]} + ${CURRENT_WORKSPACE_GEOMETRY[2]})) -le ${GROUP_GEOMETRY[0]} ]; then
+        echo "Move current window in the group to the right"
         hyprctl dispatch moveintogroup r
     fi
 
-    if [ ${CURRENT_WORKSPACE_GEOMETRY[1]} -gt ${GROUP_GEOMETRY[1]} ]; then
-        hyprctl dispatch moveintogroup u
-    else
+    if [ $((${GROUP_GEOMETRY[0]} + ${GROUP_GEOMETRY[2]})) -le ${CURRENT_WORKSPACE_GEOMETRY[0]} ]; then
+        echo "Move current window in the group to the left"
+        hyprctl dispatch moveintogroup l
+    fi
+
+    if [ $((${CURRENT_WORKSPACE_GEOMETRY[1]} + ${CURRENT_WORKSPACE_GEOMETRY[3]})) -le ${GROUP_GEOMETRY[1]} ]; then
+        echo "Move current window in the group to the bottom"
         hyprctl dispatch moveintogroup d
+    fi
+
+    if [ $((${GROUP_GEOMETRY[1]} + ${GROUP_GEOMETRY[3]})) -le ${CURRENT_WORKSPACE_GEOMETRY[1]} ]; then
+        echo "Move current window in the group to the top"
+        hyprctl dispatch moveintogroup u
     fi
 
 done
