@@ -34,5 +34,8 @@ fusuma &
 # NetworkManager applet
 nm-applet &
 
+# Application launcher
+walker --gapplication-service &
+
 # Fix applications such a GParted (X11 root apps under wayland)
 xhost +SI:localuser:root
