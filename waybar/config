@@ -101,7 +101,7 @@
     },
     "custom/powermenu": {
         "format": "",
-        "on-click": "~/.config/hypr/scripts/powermenu.sh",
+        "on-click": "walker -m custom_commands -k",
         "tooltip": false
     }
 },
