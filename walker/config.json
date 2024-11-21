@@ -100,7 +100,7 @@
     },
     "websearch": {
       "engines": [
-        "google"
+        "duckduckgo"
       ],
       "icon": "applications-internet",
       "name": "websearch",
