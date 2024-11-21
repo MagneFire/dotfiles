@@ -46,7 +46,29 @@
       "icon": "utilities-terminal",
       "name": "custom_commands",
       "placeholder": "Custom Commands",
-      "weight": 5
+      "weight": 5,
+      "commands": [
+        {
+          "name": "Reboot",
+          "cmd": "systemctl reboot"
+        },
+        {
+          "name": "Shutdown",
+          "cmd": "systemctl poweroff -i"
+        },
+        {
+          "name": "Logout",
+          "cmd": "hyprctl dispatch exit NOW"
+        },
+        {
+          "name": "Suspend",
+          "cmd": "systemctl suspend"
+        },
+        {
+          "name": "Hibernate",
+          "cmd": "systemctl hibernate"
+        }
+      ]
     },
     "dmenu": {
       "name": "dmenu",
