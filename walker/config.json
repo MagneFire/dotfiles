@@ -1,7 +1,9 @@
 {
   "activation_mode": {
-    "labels": "jkl;asdf"
+    "labels": "12345678",
+    "disabled": false
   },
+  "as_window": false,
   "builtins": {
     "applications": {
       "actions": true,
