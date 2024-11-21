@@ -111,7 +111,7 @@
       "icon": "view-restore",
       "name": "windows",
       "placeholder": "Windows",
-      "weight": 5
+      "weight": 40
     }
   },
   "disable_click_to_close": false,
