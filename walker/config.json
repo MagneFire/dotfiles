@@ -58,6 +58,7 @@
       "history": true,
       "name": "emojis",
       "placeholder": "Emojis",
+      "show_unqualified": false,
       "switcher_only": true,
       "typeahead": true,
       "weight": 5
