@@ -7,7 +7,7 @@ Config(
   x: Fraction(0.5),
 
   // The vertical position, works the same as `x`
-  y: Absolute(0),
+  y: Absolute(5),
 
   // The width of the runner
   width: Absolute(800),
@@ -19,7 +19,7 @@ Config(
   hide_icons: false, 
 
   // ignore exclusive zones, f.e. Waybar  
-  ignore_exclusive_zones: false, 
+  ignore_exclusive_zones: true,
 
   // Layer shell layer: Background, Bottom, Top, Overlay  
   layer: Overlay, 
