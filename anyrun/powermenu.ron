@@ -1,0 +1,22 @@
+Config(
+
+  prefix: "p ",
+
+  engines: [
+
+    Custom(
+      name: "Lock",
+      cmd: "swaylock",
+      icon: "system-lock-screen",
+    ),
+
+    Logout,
+    Suspend,
+    Hibernate,
+    Reboot,
+    Shutdown,
+
+  ],
+
+  max_entries: 12,
+)
