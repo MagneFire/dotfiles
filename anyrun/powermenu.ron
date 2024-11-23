@@ -1,6 +1,6 @@
 Config(
 
-  prefix: "p ",
+  prefix: "",
 
   engines: [
 
