@@ -6,7 +6,7 @@ Config(
 
     Custom(
       name: "Lock",
-      cmd: "swaylock",
+      cmd: "loginctl lock-session",
       icon: "system-lock-screen",
     ),
 
