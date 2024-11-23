@@ -101,7 +101,7 @@
     },
     "custom/powermenu": {
         "format": "",
-        "on-click": "walker -m custom_commands -k",
+        "on-click": "anyrun --hide-plugin-info=true --show-results-immediately=true --plugins libpowermenu.so",
         "tooltip": false
     }
 },
