@@ -15,7 +15,12 @@
   border-radius: 8px;
   margin: 4px 0;
   padding: 4px;
-  transition: 100ms ease-out;
+}
+#match.activatable:first-child {
+  margin-top: 12px;
+}
+#match.activatable:last-child {
+  margin-bottom: 0;
 }
 
 #match:hover {
@@ -35,4 +40,5 @@
 box#main {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 20px;
+  padding: 6px;
 }
