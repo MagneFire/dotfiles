@@ -34,5 +34,8 @@ fusuma &
 # NetworkManager applet
 nm-applet &
 
+# Dolphin file associations fix
+kbuildsycoca6
+
 # Fix applications such a GParted (X11 root apps under wayland)
 xhost +SI:localuser:root
