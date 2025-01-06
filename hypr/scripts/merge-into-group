@@ -5,6 +5,10 @@ CURRENT_WORKSPACE=`hyprctl -j activeworkspace | jq -r '"\(.id)"'`
 
 GROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length > 0) | "\(.grouped)"'`
 
+FOCUSED_WINDOW=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | "\(.address)"'`
+
+echo $FOCUSED_WINDOW
+
 if [[ -z "$GROUPED" ]]; then
     # Activate group on active window
     hyprctl dispatch togglegroup
@@ -14,7 +18,7 @@ while true; do
     HAS_UNGROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length == 0) | "\(.grouped)"'`
     if [[ -z "$HAS_UNGROUPED" ]]; then
         echo "All windows grouped"
-        exit
+        break
     fi
 
     hyprctl dispatch cyclenext
@@ -51,3 +55,6 @@ while true; do
     fi
 
 done
+
+# Focus original window
+hyprctl dispatch focuswindow address:$FOCUSED_WINDOW
