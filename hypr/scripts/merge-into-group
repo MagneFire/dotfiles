@@ -8,6 +8,14 @@ function log() {
     echo $formatted >> /tmp/merge-into-group.log
 }
 
+function tile_current_window() {
+    IS_FLOATING=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | "\(.floating)"'`)
+    if [[ "$IS_FLOATING" == true ]]; then
+        log "Floating window tiled"
+        hyprctl dispatch settiled
+    fi
+}
+
 CURRENT_WORKSPACE=`hyprctl -j activeworkspace | jq -r '"\(.id)"'`
 
 GROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length > 0) | "\(.grouped)"'`
@@ -21,6 +29,8 @@ if [[ -z "$GROUPED" ]]; then
     hyprctl dispatch togglegroup
 fi
 
+tile_current_window
+
 while true; do
     HAS_UNGROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length == 0) | "\(.grouped)"'`
     log "HAS_UNGROUPED: $HAS_UNGROUPED"
@@ -30,6 +40,8 @@ while true; do
     fi
 
     hyprctl dispatch cyclenext
+
+    tile_current_window
 
     IS_FOCUSED_GROUPED=(`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.focusHistoryID == 0) | select(.grouped | length == 0) | "\(.grouped)"'`)
     log "IS_FOCUSED_GROUPED: $IS_FOCUSED_GROUPED"
