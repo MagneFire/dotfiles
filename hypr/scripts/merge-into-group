@@ -31,7 +31,17 @@ fi
 
 tile_current_window
 
+max_windows=100
+
 while true; do
+    max_windows=$(($max_windows - 1))
+    if [ "$max_windows" -eq "0" ]; then
+        log "Max windows reached"
+        break
+    fi
+
+    UNGROUPED_WINDOWS=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length == 0)'`
+    log "UNGROUPED_WINDOWS: $UNGROUPED_WINDOWS"
     HAS_UNGROUPED=`hyprctl -j clients | jq -r '.[] | select(.workspace.id | contains('$CURRENT_WORKSPACE')) | select(.grouped | length == 0) | "\(.grouped)"'`
     log "HAS_UNGROUPED: $HAS_UNGROUPED"
     if [[ -z "$HAS_UNGROUPED" ]]; then
