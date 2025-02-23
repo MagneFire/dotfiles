@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# sleep 2
+
+while true; do
+    echo "Starting eww..."
+    $HOME/.config/eww/scripts/init &
+
+    while true; do
+       ac=`ps aux | grep "eww daemon" | wc -l`
+       sleep 1
+    done
+done
