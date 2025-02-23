@@ -19,7 +19,8 @@ hyprpaper &
 # Sway Notification Center
 swaync &
 
-$scripts/waybar &
+# $scripts/waybar &
+$scripts/restart-eww &
 
 ## Gnome authentication/keyring
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
