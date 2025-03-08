@@ -14,13 +14,15 @@ swayosd-server &
 hypridle &
 
 # Wallpaper
-hyprpaper &
+# hyprpaper &
+eww daemon
+eww open desktop
 
 # Sway Notification Center
 swaync &
 
-# $scripts/waybar &
-$scripts/restart-eww &
+$scripts/waybar &
+# $scripts/restart-eww &
 
 ## Gnome authentication/keyring
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
