@@ -16,12 +16,9 @@
 ))
 
 (defwidget company_logo [] (box
-    :space-evenly false
-    :orientation "v"
-    :valign "center"
-    :halign "center"
     :class "company_logo"
-    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png')"
+    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png'), url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png')"
+    :visible {workspaces.active_empty ? false : true}
     (desktop_clock)
 ))
 
@@ -29,5 +26,6 @@
 (defwidget desktop [] (box
     :class "desktop"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/1233933.png')"
+    ;:style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
     (desktop_clock)
 ))

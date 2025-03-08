@@ -1,6 +1,6 @@
-.company_logo{
-    min-height: 400px;
-    min-width: 400px;
-    background-size: cover;
-    background-repeat: no-repeat;
+.company_logo {
+    background-position: bottom left, bottom right;
+    margin: 20px;
+
+    background-repeat: no-repeat, no-repeat;
 }
