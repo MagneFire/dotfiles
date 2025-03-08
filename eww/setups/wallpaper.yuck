@@ -1,0 +1,8 @@
+(defwindow desktop
+    :monitor 0
+    :stacking "bottom"
+    :namespace "eww_background"
+    :geometry (geometry :width  "100%"
+                        :height "100%"
+                        :anchor "bottom right")(desktop))
+
