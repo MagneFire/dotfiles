@@ -3,7 +3,7 @@
 (defpoll    panel_clock :interval "5s" `date "+%H:%M  |  %b. %d. %A"`)
 (defpoll    hour        :interval "5s" `date "+%H"`)
 (defpoll    minutes     :interval "5s" `date "+%M"`)
-(defpoll    date        :interval "5s" `date "+%b. %d. %A"`)
+(defpoll    date        :interval "5s" `date '+%A,%d %B'`)
 
 (include "./yuck/windows.yuck")
 (include "./setups/wallpaper.yuck")
