@@ -1,5 +1,8 @@
 .desktop {
-    background-size: cover;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: black;
     .clock {
         color: transparentize(white, 0.5);
         padding: 200px;
