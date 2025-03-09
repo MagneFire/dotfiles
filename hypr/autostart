@@ -16,7 +16,8 @@ hypridle &
 # Wallpaper
 # hyprpaper &
 eww daemon
-eww open desktop
+eww open desktop-clock
+$HOME/.config/eww/scripts/hyprland monitor &
 
 # Sway Notification Center
 swaync &
