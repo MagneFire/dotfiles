@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+monitor() {
+    line=$1
+    if [[ "$line" =~ ^monitoraddedv2 ]]; then
+        event_data=${line#monitoraddedv2>>}
+
+        IFS=',' read -r screen_id monitor_name monitor_model <<< "$event_data"
+
+        if [[ -n "$screen_id" && -n "$monitor_name" ]]; then
+            MONITORS["$screen_id"]="$monitor_name"
+
+            echo "Monitor added: $screen_id ($monitor_name - $monitor_model)"
+
+            sleep 1
+
+            eww open --screen "$screen_id" --id "$screen_id" desktop
+        else
+            echo "Error parsing monitoraddedv2 event: $line"
+        fi
+    fi
+}
+
 window_title() {
     echo `hyprctl activewindow -j | jq --raw-output .title`
 }
@@ -23,9 +44,13 @@ if [[ $1 == 'workspaces' ]]; then
     done
 fi
 
-if [[ $1 == 'window' ]]; then 
+if [[ $1 == 'window' ]]; then
     window_title
     socat -u UNIX-CONNECT:/run/user/1000/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
-        window_title
+        window_title $line
+    done
+elif [[ $1 == 'monitor' ]]; then
+    socat -u UNIX-CONNECT:/run/user/1000/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+        monitor $line
     done
 fi
