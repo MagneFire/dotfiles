@@ -37,18 +37,26 @@ window_title() {
 }
 
 workspaces() {
-    hyprctl workspaces -j | jq 'map({id: .id | tostring, windows: .windows})' | tr -d '\n'
+    hyprctl workspaces -j | jq 'map({id: .id | tostring, windows: .windows, screen: .monitorID})' | tr -d '\n'
 }
 
 if [[ $1 == 'workspaces' ]]; then 
     echo "{ \"workspaces\": $(workspaces), \"active\": 1, \"active_empty\": true }"
+    active_empty='true'
     socat -u UNIX-CONNECT:/run/user/1000/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
 
         active=$(hyprctl activeworkspace -j | jq '.id')
+        active_monitor=$(hyprctl activeworkspace -j | jq '.monitorID')
 
-        active_empty='true'
-        let "i = $active"
-        if [[ $(workspaces | jq --raw-output ".[] | select(.id == \"$i\") | .windows") == 0 ]]; then active_empty='false'; fi
+        if [[ $active_monitor == $PRIMARY_DISPLAY ]]; then
+            active_empty='true'
+
+            let "i = $active"
+            if [[ $(workspaces | jq --raw-output ".[] | select(.id == \"$i\") | .windows") == 0 ]]; then
+                active_empty='false'
+            fi
+        fi
+
 
         echo "{\"workspaces\": $(workspaces),\"active\": $active,\"active_empty\": $active_empty}" 
         eww update workspaces="{\"workspaces\": $(workspaces),\"active\": $active,\"active_empty\": $active_empty}"
