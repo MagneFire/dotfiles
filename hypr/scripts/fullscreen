@@ -1,14 +1,19 @@
 #!/bin/bash
 
 windows=`hyprctl activeworkspace -j | jq '.windows'`
-hasfullscreen=`hyprctl activeworkspace -j | jq '.hasfullscreen'`
-
-echo $windows
-echo $hasfullscreen
+hasfullscreen=`hyprctl activewindow | grep fullscreenClient | awk '{print $2}'`
 
 if [ $windows -lt 2 ]; then
   echo "Ignoring fullscreen request"
   exit
+fi
+
+if [ $hasfullscreen != 1 ]; then
+    hyprctl keyword misc:new_window_takes_over_fullscreen 1
+    hyprctl keyword misc:exit_window_retains_fullscreen true
+else
+    hyprctl keyword misc:new_window_takes_over_fullscreen 0
+    hyprctl keyword misc:exit_window_retains_fullscreen false
 fi
 
 hyprctl dispatch fullscreen 1
