@@ -4,11 +4,22 @@ PRIMARY_DISPLAY=0
 
 open_desktop() {
     screen_id=$1
+    echo "Opening on $screen_id"
+
+    window="desktop"
     if [[ $screen_id == $PRIMARY_DISPLAY ]]; then
-        eww open --screen "$screen_id" --id "$screen_id" desktop-clock
-    else
-        eww open --screen "$screen_id" --id "$screen_id" desktop
+        window="desktop-clock"
     fi
+
+    open_state=`eww active-windows | grep "$screen_id: $window"`
+
+    if [[ ! -z $open_state ]]; then
+        echo "Already open"
+        return
+
+    fi
+
+    eww open --screen "$screen_id" --id "$screen_id" $window
 }
 
 monitor() {
