@@ -19,6 +19,9 @@ eww daemon
 eww open desktop-clock
 $HOME/.config/eww/scripts/hyprland monitor &
 
+# Window switcher daemon
+$HOME/.config/eww/scripts/daemon &
+
 # Sway Notification Center
 swaync &
 
