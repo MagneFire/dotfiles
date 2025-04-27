@@ -1,0 +1,35 @@
+(defwidget tab [title img ?icon onclick]
+    (button :class "tab" :onclick onclick
+        (box :class "tab-box" :orientation "v" :spacing -70
+            (box :class "tab-labels" :orientation "h" :space-evenly false :valign "start"
+                (box :class "tab-label-container" :space-evenly false :spacing 5
+                    (image :class "tab-label-icon" :path icon)
+                    (label :class "tab-label-title" :text title :unindent true :limit-width 20)
+                )
+            )
+            (image :class "tab-image" :path img :image-width 192 :image-height 108)  
+        )
+    )
+)
+
+(defpoll windows-file :initial "[\"hi\"]" :interval "1s"
+  `./scripts/get_windows.sh`)
+
+(defwindow hyprmsn [monitor]
+    :monitor monitor
+    :geometry (geometry
+        :x "0%"
+        :y "0%"
+        :width "50%"
+        :width "30%"
+        :anchor "center center"
+    )
+    :stacking "fg"
+    :windowtype "dock"
+    :class "container"
+    (box :spacing 10
+        (for window in windows-file
+           (tab :title {window.name} :img {window.image} :icon {window.icon} :onclick {window.onclick})
+        )
+    )
+)

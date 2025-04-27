@@ -1,6 +1,23 @@
+.window-button {
+    background-color: rgb(44, 44, 44);
+}
+
+.window-button:hover {
+    background-color: rgb(27, 27, 27);
+}
+
+.window-button:active {
+    background-color: rgb(17, 17, 17);
+}
+
+.window-box {
+    border: rgb(61, 61, 61) solid 3px;
+}
+
 @import "./scss/colors.scss";
 @import "./scss/variables.scss";
 @import "./scss/common.scss";
 
 @import "./scss/windows/desktop.scss";
 @import "./scss/windows/company_logo.scss";
+@import "./scss/windows/tab.scss";
