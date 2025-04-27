@@ -1,5 +1,7 @@
 (deflisten  workspaces  `scripts/hyprland workspaces`)
 
+(defvar windows "[]")
+
 (defpoll    panel_clock :interval "5s" `date "+%H:%M  |  %b. %d. %A"`)
 (defpoll    hour        :interval "5s" `date "+%H"`)
 (defpoll    minutes     :interval "5s" `date "+%M"`)

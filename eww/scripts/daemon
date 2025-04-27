@@ -1,35 +1,82 @@
 #! /bin/bash
 
+windows_cmd="hyprctl clients -j | jq -c '.[]'"
+result_old=""
 hyprmsn=$HOME/.config/hyprmsn
 mkdir $hyprmsn/windows 2> /dev/null
-window=$(hyprctl activewindow -j | jq --raw-output .title)
+address=$(hyprctl activewindow -j | jq --raw-output .address | sed 's/0x//g')
 rm -rf $hyprmsn/windows/*.jpeg 2> /dev/null
 
+img() {
+    address=$1
+    windows_images_dir=$HOME/.config/hyprmsn/windows
+    window_img="$windows_images_dir/$(ls $windows_images_dir | grep -F $address | tail -1)"
+    if [[ $window_img == "$windows_images_dir/" ]]; then
+        window_img="$windows_images_dir/default.png"
+    fi
+    echo "$window_img"
+}
+
+take_screenshot() {
+    echo $new_address
+
+    if [[ "$address" == "$new_address" ]]; then
+        echo "Skipping screenshot (same window)"
+        return
+    fi
+
+    address=$new_address
+
+    window=$(hyprctl -j clients | jq -r '.[] | select(.address == "0x'$address'")')
+    workspace=$(echo $window | jq -r '.workspace.id')
+
+    open_state=`eww active-windows | grep hyprmsn`
+
+    if [[ ! -z $open_state ]]; then
+        echo "Skipping screenshot (switcher is open)"
+        return
+    fi
+
+    at=$(echo $window | jq -r '.at | join(",")')
+    size=$(echo $window | jq -r '.size | join("x")')
+
+    echo "Taking screenshot"
+    grim -g "$at $size" -t jpeg -q 50 "$hyprmsn/windows/0x$address.jpeg"
+}
+
+update_windows() {
+    result="["
+
+    while IFS= read -r obj; do
+        address=$(echo "$obj" | jq -r '.address')
+        title=$(echo "$obj" | jq -r '.title')
+        window_img=$(img "$address")
+
+        object="{\"name\": \"$title\", \"image\": \"$window_img\", \"onclick\": \"./scripts/move_to_window.sh '$address'\"}"
+
+        result=$(echo "$result$object,")
+    done < <(eval "$windows_cmd")
+
+    result=$(echo "$result" | sed 's/,$/]/g')
+
+    if [[ "$result_old" == "$result" ]]; then
+        # echo "Skipping, no changes"
+        return
+    fi
+
+    result_old=$result
+
+    eww update windows="$result"
+}
+
 handle_window() {
-    if [[ "$line" =~ ^activewindow\>\> ]]; then
-        event_data=${line#activewindow>>}
-
-        IFS=',' read -r app title <<< "$event_data"
-        new_window=$title
-
-        if [[ "$window" == "$new_window" ]]; then
-            return
-        fi
-
-        window=$new_window
-        
-        window_str=$(echo $window | sed -e 's/[]\/$*.^[]/\\&/g') #| sed 's/\[\([^]]*\)\]/\\[\1\\]/g') #add \ to []
-        window_no_slash=$(echo $window | sed 's|/|⁄|g')
-        
-        at_size=$(hyprctl clients | sed -n "/$window_str/,/^\$/p" | grep -Ew 'at|size' | tr -d '[a-z]|:|\t| ')
-        at=$(echo $at_size | tr ' ' '\n' | head -1 | tail -1)
-        size=$(echo $at_size | tr ' ' '\n' | head -2 | tail -1 | tr ',' 'x')
-        sleep 0.4
-        grim -g "$at $size" -t jpeg -q 50 "$hyprmsn/windows/$window_no_slash.jpeg"
+    if [[ "$line" =~ ^activewindowv2\>\> ]]; then
+        new_address=${line#activewindowv2>>}
+        take_screenshot $new_address
+        update_windows
     fi
 }
 
 socat -u UNIX-CONNECT:/run/user/1000/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
     handle_window $line
-    # echo $line
 done
