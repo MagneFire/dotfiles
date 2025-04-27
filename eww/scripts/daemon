@@ -47,13 +47,24 @@ take_screenshot() {
 update_windows() {
     result="["
 
+    activeworkspace=$(hyprctl activeworkspace -j | jq '.id')
+    echo $activeworkspace
     while IFS= read -r obj; do
+        # echo $obj
+        workspace=$(echo "$obj" | jq -r '.workspace.id')
+
+        if [[ "$activeworkspace" == "$workspace" ]]; then
+            echo "Skipping screenshot (same window)"
+            continue
+        fi
+
         address=$(echo "$obj" | jq -r '.address')
         title=$(echo "$obj" | jq -r '.title')
         window_img=$(img "$address")
 
         object="{\"name\": \"$title\", \"image\": \"$window_img\", \"onclick\": \"./scripts/move_to_window.sh '$address'\"}"
 
+        echo "Appending $title"
         result=$(echo "$result$object,")
     done < <(eval "$windows_cmd")
 
