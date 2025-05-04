@@ -10,9 +10,7 @@
     ],
     "modules-right": [
         "battery",
-        "cpu",
         "custom/notifications",
-        "custom/maximized",
         "tray",
         "custom/powermenu",
         "clock"
