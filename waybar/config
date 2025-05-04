@@ -6,6 +6,7 @@
     "output": "eDP-1",
     "modules-left": [
         "hyprland/workspaces",
+        "sway/workspaces",
         "custom/playerctl"
     ],
     "modules-right": [
@@ -15,6 +16,15 @@
         "custom/powermenu",
         "clock"
     ],
+    "sway/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "focused": ""
+        },
+        "on-click": "activate",
+        "sort-by-number": true
+    },
     "hyprland/workspaces": {
         "format": "{icon}",
         "format-icons": {
@@ -110,6 +120,7 @@
     "name": "secondary-bar",
     "output": "!eDP-1",
     "modules-center": [
-        "hyprland/workspaces#secondary"
+        "hyprland/workspaces#secondary",
+        "sway/workspaces#secondary"
     ]
 }]

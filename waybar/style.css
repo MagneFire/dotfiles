@@ -72,7 +72,8 @@ window#waybar {
     transition: all 0.2s ease-in-out;
 }
 
-#workspaces button.active {
+#workspaces button.active,
+#workspaces button.focused {
     color: @foreground;
     transition: all 0.2s ease-in-out;
 }
@@ -92,7 +93,8 @@ window#waybar {
     transition: all 0.2s ease-in-out;
 }
 
-#workspaces.secondary button.active {
+#workspaces.secondary button.active,
+#workspaces.secondary button.focused {
     background-color: @foreground;
     border-radius: 0;
 }
