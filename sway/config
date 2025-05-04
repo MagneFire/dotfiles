@@ -1,0 +1,5 @@
+include $HOME/.config/sway/config.d/*
+include $HOME/.config/sway/user/*
+include $HOME/.config/sway/outputs
+include /etc/sway/outputs/*
+

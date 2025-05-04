@@ -1,0 +1,51 @@
+#!/usr/bin/bash
+
+config=$HOME/.config/hypr
+scripts=$config/scripts
+
+# Fix potential slow startup
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+# GNOME like OSD for brightness and volume
+swayosd-server &
+
+# Idle daemon
+hypridle &
+
+# Wallpaper
+# hyprpaper &
+eww daemon
+eww open desktop-clock
+$HOME/.config/eww/scripts/hyprland monitor &
+
+# Window switcher daemon
+$HOME/.config/eww/scripts/daemon &
+
+# Sway Notification Center
+swaync &
+
+$scripts/waybar &
+# $scripts/restart-eww &
+
+## Gnome authentication/keyring
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+# gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
+
+# Audio systray icon
+pasystray --notify=none &
+
+# Touchpad gestures
+fusuma &
+
+# NetworkManager applet
+nm-applet &
+
+# Applauncher
+gauntlet --minimized &
+
+# Dolphin file associations fix
+kbuildsycoca6
+
+# Fix applications such a GParted (X11 root apps under wayland)
+xhost +SI:localuser:root
