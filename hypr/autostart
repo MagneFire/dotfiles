@@ -41,6 +41,9 @@ fusuma &
 # NetworkManager applet
 nm-applet &
 
+# Applauncher
+gauntlet --minimized &
+
 # Dolphin file associations fix
 kbuildsycoca6
 
