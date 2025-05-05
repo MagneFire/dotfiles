@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Set the primary display name (e.g., "eDP-1" or "HDMI-A-1")
 PRIMARY_DISPLAY='eDP-1'
 
 open_desktop() {
@@ -57,35 +56,44 @@ window_title() {
     echo $(swaymsg -t get_tree | jq -r '.. | select(.type? == "con" and .focused == true).name')
 }
 
-workspaces() {
-    # Get workspaces from Sway and format them
-    swaymsg -t get_workspaces | jq 'map({
-        id: .name,
-        windows: (.nodes | length),
-        screen: .output
-    })'
+get_workspaces() {
+    swaymsg -t get_tree | jq '
+        [
+            .nodes[] as $output
+            | $output.nodes[]
+            | recurse(.nodes[] | objects)
+            | select(.type == "workspace")
+            | {
+                id: .name,
+                screen: $output.name,
+                windows: (
+                [ .. | objects | select(.type == "con" and .name?) ] | length
+                )
+            }
+        ]
+        '
 }
 
 if [[ $1 == 'workspaces' ]]; then
     # Initial workspace data
-    echo "{ \"workspaces\": $(workspaces), \"active\": 1, \"active_empty\": true }"
+    eww update workspaces="{ \"workspaces\": $(get_workspaces), \"active\": 1, \"active_empty\": true }"
+    active_empty='true'
 
-    # Listen for Sway events to update workspaces
-    socat -u UNIX-CONNECT:$SWAYSOCK - | while read -r line; do
-        # Parse current active workspace and monitor
+    swaymsg -m -t subscribe '["workspace","window"]' | while read -r line; do
         active=$(swaymsg -t get_workspaces | jq -r 'map(select(.focused))[0].name')
         active_monitor=$(swaymsg -t get_workspaces | jq -r 'map(select(.focused))[0].output')
+        workspaces=$(get_workspaces)
 
-        # Determine if active workspace is empty
-        active_empty='true'
-        if [[ $(workspaces | jq --raw-output --arg id "$active" '.[] | select(.id == $id) | .windows') -gt 0 ]]; then
-            active_empty='false'
+        if [[ $active_monitor == $PRIMARY_DISPLAY ]]; then
+            active_empty='true'
+
+            let "i = $active"
+            if [[ $(echo $workspaces | jq --raw-output ".[] | select(.id == \"$i\") | .windows") == 0 ]]; then
+                active_empty='false'
+            fi
         fi
 
-        # Output JSON and update eww
-        output="{ \"workspaces\": $(workspaces), \"active\": \"$active\", \"active_empty\": $active_empty }"
-        echo "$output"
-        eww update workspaces="$output"
+        eww update workspaces="{\"workspaces\": $workspaces,\"active\": $active,\"active_empty\": $active_empty}"
     done
 fi
 
