@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+# Set the primary display name (e.g., "eDP-1" or "HDMI-A-1")
+PRIMARY_DISPLAY='eDP-1'
+
+open_desktop() {
+    screen_id=$1
+    echo "Opening on $screen_id"
+
+    window="desktop"
+    if [[ $screen_id == $PRIMARY_DISPLAY ]]; then
+        window="desktop-clock"
+    fi
+
+    # Check if the window is already open on the screen
+    open_state=$(eww active-windows | grep -w "$screen_id: $window")
+
+    if [[ ! -z $open_state ]]; then
+        echo "Already open"
+        return
+    fi
+
+    # Open the specified window on the screen
+    eww open --screen "$screen_id" --id "$screen_id" $window
+}
+
+close_desktop() {
+    screen_id=$1
+    echo "Closing window on $screen_id"
+    eww close "$screen_id"
+}
+
+handle_monitor() {
+    ACTIVE=$(eww active-windows)
+    MONITORS=$(swaymsg -t get_outputs | jq -r '.[].name')
+
+    while IFS= read -r active; do
+        IFS=': ' read -r active_id window_name <<< "$active"
+
+        found=false
+        while IFS= read -r screen_id; do
+            [[ $screen_id == $active_id ]] && found=true
+        done <<< "$MONITORS"
+
+        if [[ $found == false ]]; then
+            echo "$active_id has been removed"
+            close_desktop "$active_id"
+        fi
+    done <<< "$ACTIVE"
+
+    while IFS= read -r screen_id; do
+        open_desktop "$screen_id"
+    done <<< "$MONITORS"
+}
+
+window_title() {
+    echo $(swaymsg -t get_tree | jq -r '.. | select(.type? == "con" and .focused == true).name')
+}
+
+workspaces() {
+    # Get workspaces from Sway and format them
+    swaymsg -t get_workspaces | jq 'map({
+        id: .name,
+        windows: (.nodes | length),
+        screen: .output
+    })'
+}
+
+if [[ $1 == 'workspaces' ]]; then
+    # Initial workspace data
+    echo "{ \"workspaces\": $(workspaces), \"active\": 1, \"active_empty\": true }"
+
+    # Listen for Sway events to update workspaces
+    socat -u UNIX-CONNECT:$SWAYSOCK - | while read -r line; do
+        # Parse current active workspace and monitor
+        active=$(swaymsg -t get_workspaces | jq -r 'map(select(.focused))[0].name')
+        active_monitor=$(swaymsg -t get_workspaces | jq -r 'map(select(.focused))[0].output')
+
+        # Determine if active workspace is empty
+        active_empty='true'
+        if [[ $(workspaces | jq --raw-output --arg id "$active" '.[] | select(.id == $id) | .windows') -gt 0 ]]; then
+            active_empty='false'
+        fi
+
+        # Output JSON and update eww
+        output="{ \"workspaces\": $(workspaces), \"active\": \"$active\", \"active_empty\": $active_empty }"
+        echo "$output"
+        eww update workspaces="$output"
+    done
+fi
+
+if [[ $1 == 'window' ]]; then
+    window_title
+    socat -u UNIX-CONNECT:$SWAYSOCK - | while read -r line; do
+        window_title
+    done
+elif [[ $1 == 'monitor' ]]; then
+    # Initialize existing monitors
+    handle_monitor
+
+    swaymsg -m -t subscribe '["output"]' | while read -r line; do
+        handle_monitor
+    done
+fi
