@@ -17,6 +17,7 @@ hypridle &
 # hyprpaper &
 eww daemon
 $HOME/.config/eww/scripts/sway monitor &
+$HOME/.config/eww/scripts/sway workspaces &
 
 # Window switcher daemon
 $HOME/.config/eww/scripts/daemon &
