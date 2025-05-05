@@ -44,6 +44,9 @@ nm-applet &
 # Applauncher
 gauntlet --minimized &
 
+# Enable auto/smart tiling
+autotiling-rs &
+
 # Dolphin file associations fix
 kbuildsycoca6
 
