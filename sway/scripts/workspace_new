@@ -4,4 +4,6 @@ last_workspace=$(swaymsg -t get_workspaces | jq -r 'sort_by(.num) | reverse | .[
 
 new_workspace=$(($last_workspace + 1))
 
+echo $new_workspace
+
 swaymsg workspace "$new_workspace"
