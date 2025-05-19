@@ -1,5 +1,15 @@
 #!/bin/bash
 
+CURRENT_MONITOR=$(swaymsg -t get_outputs | jq -r 'map(select(.focused))[0].name')
+
+FOCUSED_WORKSPACE=$(swaymsg -t get_workspaces | jq -r --arg output "$CURRENT_MONITOR" '[ .[] | select(.output==$output and .focused?)] | sort_by(.num) | .[] | .num')
+
+WINDOWS=$(swaymsg -t get_tree | jq -r --arg focused "$FOCUSED_WORKSPACE" '.nodes[] as $output | $output.nodes[] | recurse(.nodes[] | objects) | select(.type == "workspace") | select(.name == $focused) | ([ .. | objects | select(.type == "con" and .name?) ] | length)')
+
+if [[ $WINDOWS == 0 ]]; then
+    exit;
+fi
+
 last_workspace=$(swaymsg -t get_workspaces | jq -r 'sort_by(.num) | reverse | .[0].name')
 
 new_workspace=$(($last_workspace + 1))
