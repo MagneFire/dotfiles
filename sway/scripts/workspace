@@ -18,8 +18,13 @@ for i in "${!WORKSPACES[@]}"; do
     FOCUSED_WORKSPACE_INDEX=$(($FOCUSED_WORKSPACE_INDEX + 1))
 done
 
+CREATE_NEW=false
+
 if [[ $1 == 'next' ]]; then
     TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX + 1))
+elif [[ $1 == 'next-new' ]]; then
+    TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX + 1))
+    CREATE_NEW=true
 elif [[ $1 == 'prev' ]]; then
     TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX - 1))
 elif [[ $1 == 'begin' ]]; then
@@ -34,7 +39,12 @@ if [[ $TARGET_INDEX == "-1" ]]; then
     echo "Cannot move past workspace zero"
     exit
 elif [[ $TARGET_INDEX == ${#WORKSPACES[@]} ]]; then
-    echo "Cannot move past last workspace"
+    if [[ $CREATE_NEW == false ]]; then
+        echo "Cannot move past last workspace"
+        exit
+    fi
+
+    $HOME/.config/sway/scripts/workspace_new
     exit
 fi
 
