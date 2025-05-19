@@ -22,6 +22,10 @@ if [[ $1 == 'next' ]]; then
     TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX + 1))
 elif [[ $1 == 'prev' ]]; then
     TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX - 1))
+elif [[ $1 == 'begin' ]]; then
+    TARGET_INDEX=0
+elif [[ $1 == 'end' ]]; then
+    TARGET_INDEX=$((${#WORKSPACES[@]} - 1))
 else
     TARGET_INDEX=$(($1 - 1))
 fi
