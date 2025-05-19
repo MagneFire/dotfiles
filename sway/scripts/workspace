@@ -5,7 +5,34 @@ CURRENT_MONITOR=$(swaymsg -t get_outputs | jq -r 'map(select(.focused))[0].name'
 
 WORKSPACES=(`swaymsg -t get_workspaces | jq -r --arg output "$CURRENT_MONITOR" '[ .[] | select(.output==$output)] | sort_by(.num) | .[] | .num'`)
 
-TARGET_INDEX=$(($1 - 1))
+FOCUSED_WORKSPACE=$(swaymsg -t get_workspaces | jq -r --arg output "$CURRENT_MONITOR" '[ .[] | select(.output==$output and .focused?)] | sort_by(.num) | .[] | .num')
+
+TARGET_INDEX=0
+
+FOCUSED_WORKSPACE_INDEX=0
+for i in "${!WORKSPACES[@]}"; do
+    workspace=${WORKSPACES[$i]}
+    if [[ $workspace == $FOCUSED_WORKSPACE ]]; then
+        break
+    fi
+    FOCUSED_WORKSPACE_INDEX=$(($FOCUSED_WORKSPACE_INDEX + 1))
+done
+
+if [[ $1 == 'next' ]]; then
+    TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX + 1))
+elif [[ $1 == 'prev' ]]; then
+    TARGET_INDEX=$(($FOCUSED_WORKSPACE_INDEX - 1))
+else
+    TARGET_INDEX=$(($1 - 1))
+fi
+
+if [[ $TARGET_INDEX == "-1" ]]; then
+    echo "Cannot move past workspace zero"
+    exit
+elif [[ $TARGET_INDEX == ${#WORKSPACES[@]} ]]; then
+    echo "Cannot move past last workspace"
+    exit
+fi
 
 TARGET_WORKSPACE=${WORKSPACES[$TARGET_INDEX]}
 
