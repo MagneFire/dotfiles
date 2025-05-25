@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec env GTK_THEME= /opt/zen-browser-bin/zen-bin "$@"
