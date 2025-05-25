@@ -20,7 +20,7 @@ $HOME/.config/eww/scripts/sway monitor &
 $HOME/.config/eww/scripts/sway workspaces &
 
 # Window switcher daemon
-$HOME/.config/eww/scripts/daemon &
+$HOME/.config/eww/scripts/daemon_sway &
 
 # Sway Notification Center
 swaync &
@@ -31,9 +31,6 @@ $scripts/waybar &
 ## Gnome authentication/keyring
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
-
-# Switch last focused window
-sway-alttab
 
 # Audio systray icon
 pasystray --notify=none &
