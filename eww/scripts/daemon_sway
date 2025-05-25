@@ -1,0 +1,78 @@
+#! /bin/bash
+
+windows_cmd="swaymsg -t get_tree | jq -cr '.. | select(.type? == \"con\" and .name?)'"
+result_old=""
+hyprmsn=$HOME/.config/hyprmsn
+mkdir $hyprmsn/windows 2> /dev/null
+rm -rf $hyprmsn/windows/*.jpeg 2> /dev/null
+
+img() {
+    address=$1
+    windows_images_dir=$HOME/.config/hyprmsn/windows
+    window_img="$windows_images_dir/$(ls $windows_images_dir | grep -F $address | tail -1)"
+    if [[ $window_img == "$windows_images_dir/" ]]; then
+        window_img="$windows_images_dir/default.png"
+    fi
+    echo "$window_img"
+}
+
+take_screenshot() {
+    # echo $line
+
+    address=$(echo $line | jq -r '.container.id')
+    at=$(echo "$line" | jq -r '.container.rect as $rect | [$rect.x, $rect.y] | join(",")')
+    size=$(echo "$line" | jq -r '.container.rect as $rect | [$rect.width, $rect.height] | join("x")')
+
+    echo $address
+
+    if [[ "$old_address" == "$address" ]]; then
+        echo "Skipping screenshot (same window)"
+        return
+    fi
+
+    old_address=$address
+
+    open_state=`eww active-windows | grep hyprmsn`
+
+    if [[ ! -z $open_state ]]; then
+        echo "Skipping screenshot (switcher is open)"
+        return
+    fi
+
+    echo "Taking screenshot"
+    grim -g "$at $size" -t jpeg -q 50 "$hyprmsn/windows/0x$address.jpeg"
+}
+
+update_windows() {
+    result="["
+
+    while IFS= read -r obj; do
+        # echo $obj
+
+        address=$(echo $obj | jq -r '.id')
+        title=$(echo "$obj" | jq -r '.name')
+        window_img=$(img "$address")
+
+        object="{\"name\": \"$title\", \"image\": \"$window_img\", \"onclick\": \"./scripts/move_to_window.sh '$address'\"}"
+
+        # echo "Appending $title"
+        result=$(echo "$result$object,")
+    done < <(eval "$windows_cmd")
+
+    result=$(echo "$result" | sed 's/,$/]/g')
+
+    if [[ "$result_old" == "$result" ]]; then
+        # echo "Skipping, no changes"
+        return
+    fi
+
+    result_old=$result
+
+    eww update windows="$result"
+}
+
+swaymsg -m -t subscribe '["window"]' | jq --unbuffered -cr 'select(.change == "focus")' | while read -r line; do
+    # echo $line
+    take_screenshot $line
+    update_windows
+done
