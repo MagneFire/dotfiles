@@ -1,2 +1,2 @@
 #!/usr/bin/sh
-eww open hyprmsn --arg monitor=$(hyprctl -j monitors | jq -r '.[] | select(."focused"==true).id')
+eww open-many hyprmsn hyprmsn-closer --arg monitor=$(hyprctl -j monitors | jq -r '.[] | select(."focused"==true).id')
