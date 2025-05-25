@@ -1,0 +1,2 @@
+#!/usr/bin/sh
+eww open-many hyprmsn hyprmsn-closer --arg monitor=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused == true).name')
