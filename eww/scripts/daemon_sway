@@ -44,6 +44,8 @@ take_screenshot() {
 }
 
 update_windows() {
+    echo "Updating windows"
+
     result="["
 
     while IFS= read -r obj; do
@@ -71,8 +73,11 @@ update_windows() {
     eww update windows="$result"
 }
 
-swaymsg -m -t subscribe '["window"]' | jq --unbuffered -cr 'select(.change == "focus")' | while read -r line; do
+swaymsg -m -t subscribe '["window"]' | jq --unbuffered -cr 'select(.change == "focus" or .change == "close")' | while read -r line; do
     # echo $line
-    take_screenshot $line
+    change=`echo $line | jq -r '.change'`
+    if [[ $change == "focus" ]]; then
+        take_screenshot $line
+    fi
     update_windows
 done
