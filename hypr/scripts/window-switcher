@@ -1,2 +1,16 @@
 #!/usr/bin/sh
+
+windows=`eww get windows | jq length`
+if [[ $windows -eq 0 ]]; then
+    echo "No open windows"
+    exit
+fi
+
+open_state=`eww active-windows | grep hyprmsn`
+
+if [[ ! -z $open_state ]]; then
+    echo "Already open"
+    return
+fi
+
 eww open-many hyprmsn hyprmsn-closer --arg monitor=$(hyprctl -j monitors | jq -r '.[] | select(."focused"==true).id')
