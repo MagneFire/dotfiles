@@ -5,7 +5,7 @@ scripts=$config/scripts
 
 # Fix potential slow startup
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_CURRENT_DESKTOP=sway
 
 # GNOME like OSD for brightness and volume
 swayosd-server &
