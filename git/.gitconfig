@@ -18,7 +18,7 @@ co-author = "!co_authored_commit() { usage='usage: git co-author --author \"name
 	email = dgriet@gmail.com
 	signingkey = AEC0C86DA5BFC9A2FA974689B20ADEFE1E03AA75
 [core]
-	editor = nano
+	editor = vim
 	autocrlf = input
 	pager = delta
 [interactive]
