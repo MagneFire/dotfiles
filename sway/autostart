@@ -42,7 +42,7 @@ fusuma &
 nm-applet &
 
 # Applauncher
-gauntlet --minimized &
+albert &
 
 # Enable auto/smart tiling
 autotiling-rs &
