@@ -1,0 +1,89 @@
+/* Original copyright: Manuel Schneider, License: MIT */
+
+* {
+    border: none;
+    color : #000000;
+}
+
+#frame {
+    padding: 8px 0px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    min-width:640px;
+    max-width:640px;
+}
+
+#inputLine {
+    padding: 0px 8px;
+    font-size: 28px;
+    color: rgba(255, 255, 255, 1);
+    selection-color: rgba(255, 255, 255, 1);
+    selection-background-color: rgba(110, 150, 180, 0.7);
+    background-color: transparent;
+}
+
+#settingsButton {
+    margin: 6px 6px 0px 0px;
+    color: palette(highlight);
+    background-color: transparent;
+    padding: 2px;
+    min-width:14px;
+    min-height:14px;
+    max-width:14px;
+    max-height:14px;
+}
+
+/********** ListViews ************/
+
+QListView {
+    /* selection-color: palette(highlighted-text); */
+    color: rgba(255, 255, 255, 1);
+    background: transparent;
+}
+
+QListView::item:selected {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+QListView QScrollBar:vertical  {
+    width: 3px;
+    background: transparent;
+}
+
+QListView QScrollBar::handle:vertical  {
+    background: #AAAAAA;
+    border-radius: 1px;
+    min-height: 24px;
+}
+
+QListView QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+QListView QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
+QListView QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    border: 0px;
+    width: 0px;
+    height: 0px;
+    background: transparent;
+}
+
+/********** resultsList **********/
+
+QListView#resultsList {
+    icon-size: 40px;
+    font-size: 20px;
+}
+
+QListView#resultsList::item {
+    padding: 8px 0px 0px 0px;
+    height: 48px;
+}
+
+/********** actionList **********/
+
+QListView#actionList {
+    font-size: 14px;
+}
+
+QListView#actionList::item {
+    padding: 4px;
+}
