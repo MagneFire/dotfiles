@@ -11,6 +11,12 @@ CONID=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true) |
 
 TARGET_INDEX=0
 
+if [[ $1 == 'insert-next' ]]; then
+    python $HOME/.config/sway/scripts/move_workspaces.py --insert-ws-next
+elif [[ $1 == 'insert-prev' ]]; then
+    python $HOME/.config/sway/scripts/move_workspaces.py --insert-ws-prev
+fi
+
 FOCUSED_WORKSPACE_INDEX=0
 for i in "${!WORKSPACES[@]}"; do
     workspace=${WORKSPACES[$i]}
@@ -28,6 +34,12 @@ if [[ $1 == 'prev' ]]; then
 fi
 
 TARGET_WORKSPACE=${WORKSPACES[$TARGET_INDEX]}
+
+if [[ $1 == 'insert-next' ]]; then
+    TARGET_WORKSPACE=$((${WORKSPACES[$FOCUSED_WORKSPACE_INDEX]} + 1))
+elif [[ $1 == 'insert-prev' ]]; then
+    TARGET_WORKSPACE=$((${WORKSPACES[$FOCUSED_WORKSPACE_INDEX]} - 1))
+fi
 
 if [[ -z $TARGET_WORKSPACE ]]; then
     # Next workspace doesn't exist create a new one and move the window to it.
