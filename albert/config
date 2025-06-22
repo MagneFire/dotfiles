@@ -16,6 +16,10 @@ enabled=false
 [python]
 enabled=true
 
+[python.bitwarden]
+cache_timeout=5
+enabled=true
+
 [python.docker]
 enabled=false
 
