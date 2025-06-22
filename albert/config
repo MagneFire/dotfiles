@@ -10,18 +10,21 @@ terminal=kitty
 [calculator_qalculate]
 enabled=true
 
-[mediaremote]
-enabled=false
+[files]
+enabled=true
 
 [python]
+enabled=true
+
+[python.arch_wiki]
+enabled=true
+
+[python.aur]
 enabled=true
 
 [python.bitwarden]
 cache_timeout=5
 enabled=true
-
-[python.docker]
-enabled=false
 
 [python.emoji]
 enabled=true
@@ -39,15 +42,19 @@ enabled=true
 [python.python_eval]
 enabled=true
 
-[snippets]
-enabled=false
-
 [ssh]
 enabled=true
 
 [system]
 command_lock=loginctl lock-session
 enabled=true
+
+[vpn]
+enabled=true
+
+[websearch]
+enabled=true
+trigger="ws "
 
 [widgetsboxmodel]
 alwaysOnTop=true
