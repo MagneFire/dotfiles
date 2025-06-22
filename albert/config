@@ -25,6 +25,7 @@ enabled=false
 
 [python.emoji]
 enabled=true
+global_handler_enabled=false
 
 [python.jetbrains_projects]
 enabled=true
