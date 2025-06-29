@@ -9,6 +9,12 @@ FOCUSED_WORKSPACE=$(swaymsg -t get_workspaces | jq -r --arg output "$CURRENT_MON
 
 CONID=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true) | .id')
 
+WINDOWS=$(swaymsg -t get_tree | jq -r --arg focused "$FOCUSED_WORKSPACE" '.nodes[] as $output | $output.nodes[] | recurse(.nodes[] | objects) | select(.type == "workspace") | select(.name == $focused) | ([ .. | objects | select(.type == "con" and .name?) ] | length)')
+
+if [[ $WINDOWS -lt 2 ]]; then
+    exit
+fi
+
 TARGET_INDEX=0
 
 if [[ $1 == 'insert-next' ]]; then
