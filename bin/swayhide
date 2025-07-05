@@ -1,0 +1,51 @@
+#!/bin/bash
+# Heavily inspired by https://github.com/rehanzo/swayhide
+# Notably this version adds support for executing commands as root
+
+command_args=("$@")
+cmd="${command_args[*]}"
+
+# Get current window id
+conid=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true) | .id')
+
+if [[ -z "$conid" ]]; then
+    echo "No focused window found." >&2
+    exit 1
+fi
+
+# Wait for the new window to be spawned, use redirect to subshell to get the pid of swaymsg
+swaymsg -m -t subscribe '["window"]' > >(
+    first=1
+    jq --unbuffered -cr 'select(.change == "new")' | \
+    while read -r line; do
+        # Only hide the window once
+        if [[ $first -eq 1 ]]; then
+            swaymsg "[con_id=$conid] focus; move scratchpad"
+            swaymsg "split none"
+        fi
+        first=0
+    done
+) &
+swaymsg_id=$!
+
+# Split container and set layout
+swaymsg "split v"
+
+# Run the command in the background
+eval "$cmd" &
+process_id=$!
+
+# Wait for the command to finish
+wait $process_id
+exit_code=$?
+
+# Print exit status
+if [[ $exit_code -ne 0 ]]; then
+    echo "swayhide: $cmd exited with code: $exit_code" >&2
+fi
+
+# Restore layout
+swaymsg "[con_id=$conid] focus; floating disable"
+
+# Stop listening for events, allows proper process exit
+kill $swaymsg_id
