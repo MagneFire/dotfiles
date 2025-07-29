@@ -76,7 +76,7 @@ get_workspaces() {
 
 if [[ $1 == 'workspaces' ]]; then
     # Initial workspace data
-    eww update workspaces="{ \"workspaces\": $(get_workspaces), \"active\": 1, \"active_empty\": true }"
+    eww update workspaces="{ \"workspaces\": $(get_workspaces), \"active\": 1, \"active_empty\": false }"
     active_empty='true'
 
     swaymsg -m -t subscribe '["workspace","window"]' | while read -r line; do
