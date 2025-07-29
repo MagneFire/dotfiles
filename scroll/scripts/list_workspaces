@@ -1,0 +1,19 @@
+#!/bin/bash
+# Move a window to the the next or previous workspace on the current monitor.
+
+CURRENT_MONITOR=$(swaymsg -t get_outputs | jq -r 'map(select(.focused))[0].name')
+
+WORKSPACES=(`swaymsg -t get_workspaces | jq -r --arg output "$CURRENT_MONITOR" '[ .[] | select(.output==$output)] | sort_by(.num) | .[] | .num'`)
+
+FOCUSED_WORKSPACE=$(swaymsg -t get_workspaces | jq -r --arg output "$CURRENT_MONITOR" '[ .[] | select(.output==$output and .focused?)] | sort_by(.num) | .[] | .num')
+
+echo "$FOCUSED_WORKSPACE: Focused workspace"
+
+for i in "${!WORKSPACES[@]}"; do
+    workspace=${WORKSPACES[$i]}
+    if [[ $workspace == $FOCUSED_WORKSPACE ]]; then
+        echo "$workspace: focused"
+    else
+        echo "$workspace"
+    fi
+done
