@@ -20,12 +20,20 @@
 (defwidget company-logo-clock [] (box
     :class "company_logo"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png'), url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png')"
+    :visible {workspaces.active_empty ? false : true}
     (desktop_clock)
+))
+
+(defwidget desktop-clock-blur [] (box
+    :class "desktop"
+    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest-blur.jpg')"
+    :visible {workspaces.active_empty ? true : false}
+    (company-logo-clock)
 ))
 
 (defwidget desktop-clock [] (box
     :class "desktop"
-    ;:style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/1233933.png')"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
-    (desktop_clock)
+    (desktop-clock-blur)
+    (company-logo-clock)
 ))
