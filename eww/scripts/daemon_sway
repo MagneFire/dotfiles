@@ -23,7 +23,7 @@ take_screenshot() {
     at=$(echo "$line" | jq -r '.container.rect as $rect | [$rect.x, $rect.y] | join(",")')
     size=$(echo "$line" | jq -r '.container.rect as $rect | [$rect.width, $rect.height] | join("x")')
 
-    echo $address
+    # echo $address
 
     if [[ "$old_address" == "$address" ]]; then
         echo "Skipping screenshot (same window)"
@@ -39,12 +39,12 @@ take_screenshot() {
         return
     fi
 
-    echo "Taking screenshot"
+    # echo "Taking screenshot"
     grim -g "$at $size" -t jpeg -q 50 "$hyprmsn/windows/0x$address.jpeg"
 }
 
 update_windows() {
-    echo "Updating windows"
+    # echo "Updating windows"
 
     result="["
 
