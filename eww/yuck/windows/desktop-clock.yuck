@@ -1,6 +1,6 @@
 (include "./yuck/windows/desktop.yuck")
 
-(defwidget desktop_clock [] (box
+(defwidget clock [] (box
     :class "clock"
     :space-evenly false
     :orientation "v"
@@ -21,19 +21,12 @@
     :class "company_logo"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png'), url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png')"
     :visible {workspaces.active_empty ? false : true}
-    (desktop_clock)
-))
-
-(defwidget desktop-clock-blur [] (box
-    :class "desktop"
-    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest-blur.jpg')"
-    :visible {workspaces.active_empty ? true : false}
-    (company-logo-clock)
+    (clock)
 ))
 
 (defwidget desktop-clock [] (box
     :class "desktop"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
-    (desktop-clock-blur)
+    (desktop-blur)
     (company-logo-clock)
 ))
