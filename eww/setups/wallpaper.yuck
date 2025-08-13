@@ -1,16 +1,16 @@
-(defwindow desktop
+(defwindow desktop [screen]
     :monitor 0
     :stacking "bottom"
     :namespace "eww_background"
     :geometry (geometry :width  "100%"
                         :height "100%"
-                        :anchor "bottom right")(desktop))
+                        :anchor "bottom right")(desktop :screen screen))
 
-(defwindow desktop-clock
+(defwindow desktop-clock [screen]
     :monitor 0
     :stacking "bottom"
     :namespace "eww_background"
     :geometry (geometry :width  "100%"
                         :height "100%"
-                        :anchor "bottom right")(desktop-clock))
+                        :anchor "bottom right")(desktop-clock :screen screen))
 

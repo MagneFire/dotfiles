@@ -1,11 +1,11 @@
 (include "./yuck/windows/desktop.yuck")
 
-(defwidget clock [] (box
+(defwidget clock [screen] (box
     :class "clock"
     :space-evenly false
     :orientation "v"
     :spacing -30
-    :visible {workspaces.active_empty ? false : true}
+    :visible {outputs[screen].windows == 0}
     (box
         :space-evenly false
         :spacing -86
@@ -17,16 +17,16 @@
     (label :class "date" :text date)
 ))
 
-(defwidget company-logo-clock [] (box
+(defwidget company-logo-clock [screen] (box
     :class "company_logo"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png'), url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png')"
-    :visible {workspaces.active_empty ? false : true}
-    (clock)
+    :visible {outputs[screen].windows == 0}
+    (clock :screen screen)
 ))
 
-(defwidget desktop-clock [] (box
+(defwidget desktop-clock [screen] (box
     :class "desktop"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
-    (desktop-blur)
-    (company-logo-clock)
+    (desktop-blur :screen screen)
+    (company-logo-clock :screen screen)
 ))
