@@ -13,14 +13,9 @@ swayosd-server &
 # Idle daemon
 hypridle &
 
-# Wallpaper
-# hyprpaper &
+# Wallpaper and Window switcher daemon
 eww daemon
-$HOME/.config/eww/scripts/sway monitor &
-$HOME/.config/eww/scripts/sway outputs &
-
-# Window switcher daemon
-$HOME/.config/eww/scripts/daemon_sway &
+$HOME/.config/eww/scripts/daemon &
 
 # Sway Notification Center
 swaync &
