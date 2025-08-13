@@ -20,7 +20,7 @@ open_desktop() {
     fi
 
     # Open the specified window on the screen
-    eww open --screen "$screen_id" --id "$screen_id" $window
+    eww open --screen "$screen_id" --id "$screen_id" --arg screen=$screen_id $window
 }
 
 close_desktop() {
@@ -64,13 +64,39 @@ get_workspaces() {
             | recurse(.nodes[] | objects)
             | select(.type == "workspace")
             | {
-                id: .name,
+                id: .name |  tonumber? // .,
                 screen: $output.name,
                 windows: (
                 [ .. | objects | select(.type == "con" and .name?) ] | length
                 )
             }
         ]
+        '
+}
+
+get_outputs() {
+    swaymsg -t get_tree | jq '
+        reduce .nodes[] as $output ({}; . + { ($output.name): { current_workspace: ($output.current_workspace | tonumber? // $output.current_workspace) } })
+    '
+}
+
+get_outputs_workspaces() {
+    workspaces=$(get_workspaces)
+    outputs=$(get_outputs)
+
+    jq -n --argjson outputs "$outputs" --argjson workspaces "$workspaces" '
+        $outputs
+        | to_entries
+        | map(
+            . as $e
+            | $e.value.windows =
+                if $e.value.current_workspace == null then
+                    null
+                else
+                    ($workspaces[] | select(.id == $e.value.current_workspace) | .windows)
+                end
+            )
+        | from_entries
         '
 }
 
@@ -94,6 +120,15 @@ if [[ $1 == 'workspaces' ]]; then
         fi
 
         eww update workspaces="{\"workspaces\": $workspaces,\"active\": $active,\"active_empty\": $active_empty}"
+    done
+fi
+
+if [[ $1 == 'outputs' ]]; then
+    # Initial output data
+    eww update outputs="$(get_outputs_workspaces)"
+
+    swaymsg -m -t subscribe '["workspace","window", "output"]' | while read -r line; do
+        eww update outputs="$(get_outputs_workspaces)"
     done
 fi
 

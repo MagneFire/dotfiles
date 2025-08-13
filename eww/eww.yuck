@@ -1,5 +1,5 @@
 (defvar workspaces "[]")
-
+(defvar outputs "[]")
 (defvar windows "[]")
 
 (defpoll    panel_clock :interval "5s" `date "+%H:%M  |  %b. %d. %A"`)

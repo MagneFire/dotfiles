@@ -1,18 +1,18 @@
-(defwidget company-logo [] (box
+(defwidget company-logo [screen] (box
     :class "company_logo"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png'), url('${EWW_CONFIG_DIR}/assets/wallpapers/company_logo.png')"
-    :visible {workspaces.active_empty ? false : true}
+    :visible {outputs[screen].windows == 0}
 ))
 
-(defwidget desktop-blur [] (box
+(defwidget desktop-blur [screen] (box
     :class "desktop"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest-blur.jpg')"
-    :visible {workspaces.active_empty ? true : false}
+    :visible {outputs[screen].windows != 0}
 ))
 
-(defwidget desktop [] (box
+(defwidget desktop [screen] (box
     :class "desktop"
     :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
-    (desktop-blur)
-    (company-logo)
+    (desktop-blur :screen screen)
+    (company-logo :screen screen)
 ))
