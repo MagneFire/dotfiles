@@ -13,14 +13,9 @@ swayosd-server &
 # Idle daemon
 hypridle &
 
-# Wallpaper
-# hyprpaper &
+# Wallpaper and Window switcher daemon
 eww daemon
-$HOME/.config/eww/scripts/scroll monitor &
-$HOME/.config/eww/scripts/scroll workspaces &
-
-# Window switcher daemon
-$HOME/.config/eww/scripts/daemon_scroll &
+$HOME/.config/eww/scripts/daemon &
 
 # Sway Notification Center
 swaync &
