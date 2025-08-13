@@ -13,14 +13,8 @@ swayosd-server &
 # Idle daemon
 hypridle &
 
-# Wallpaper
-# hyprpaper &
+# Wallpaper and Window switcher daemon
 eww daemon
-eww open desktop-clock
-$HOME/.config/eww/scripts/hyprland monitor &
-$HOME/.config/eww/scripts/hyprland workspaces &
-
-# Window switcher daemon
 $HOME/.config/eww/scripts/daemon &
 
 # Sway Notification Center
