@@ -1,0 +1,4 @@
+include $HOME/.config/sway/config.d/*
+include $HOME/.config/scroll/config.d/*
+include $HOME/.config/scroll/user/*
+include $HOME/.config/scroll/outputs
