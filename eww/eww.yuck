@@ -1,4 +1,3 @@
-(defvar workspaces "[]")
 (defvar outputs "[]")
 (defvar windows "[]")
 

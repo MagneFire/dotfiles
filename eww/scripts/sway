@@ -100,29 +100,6 @@ get_outputs_workspaces() {
         '
 }
 
-if [[ $1 == 'workspaces' ]]; then
-    # Initial workspace data
-    eww update workspaces="{ \"workspaces\": $(get_workspaces), \"active\": 1, \"active_empty\": false }"
-    active_empty='true'
-
-    swaymsg -m -t subscribe '["workspace","window"]' | while read -r line; do
-        active=$(swaymsg -t get_workspaces | jq -r 'map(select(.focused))[0].name')
-        active_monitor=$(swaymsg -t get_workspaces | jq -r 'map(select(.focused))[0].output')
-        workspaces=$(get_workspaces)
-
-        if [[ $active_monitor == $PRIMARY_DISPLAY ]]; then
-            active_empty='true'
-
-            let "i = $active"
-            if [[ $(echo $workspaces | jq --raw-output ".[] | select(.id == \"$i\") | .windows") == 0 ]]; then
-                active_empty='false'
-            fi
-        fi
-
-        eww update workspaces="{\"workspaces\": $workspaces,\"active\": $active,\"active_empty\": $active_empty}"
-    done
-fi
-
 if [[ $1 == 'outputs' ]]; then
     # Initial output data
     eww update outputs="$(get_outputs_workspaces)"
@@ -132,12 +109,7 @@ if [[ $1 == 'outputs' ]]; then
     done
 fi
 
-if [[ $1 == 'window' ]]; then
-    window_title
-    socat -u UNIX-CONNECT:$SWAYSOCK - | while read -r line; do
-        window_title
-    done
-elif [[ $1 == 'monitor' ]]; then
+if [[ $1 == 'monitor' ]]; then
     # Initialize existing monitors
     handle_monitor
 
