@@ -2,6 +2,11 @@
 
 PRIMARY_DISPLAY='eDP-1'
 
+SWAYMSG="swaymsg"
+if echo $SWAYSOCK | grep "scroll" &>/dev/null; then
+    SWAYMSG="scrollmsg"
+fi
+
 open_desktop() {
     screen_id=$1
     echo "Opening on $screen_id"
@@ -31,7 +36,7 @@ close_desktop() {
 
 handle_monitor() {
     ACTIVE=$(eww active-windows)
-    MONITORS=$(swaymsg -t get_outputs | jq -r '.[].name')
+    MONITORS=$($SWAYMSG -t get_outputs | jq -r '.[].name')
 
     while IFS= read -r active; do
         IFS=': ' read -r active_id window_name <<< "$active"
@@ -53,11 +58,11 @@ handle_monitor() {
 }
 
 window_title() {
-    echo $(swaymsg -t get_tree | jq -r '.. | select(.type? == "con" and .focused == true).name')
+    echo $($SWAYMSG -t get_tree | jq -r '.. | select(.type? == "con" and .focused == true).name')
 }
 
 get_workspaces() {
-    swaymsg -t get_tree | jq '
+    $SWAYMSG -t get_tree | jq '
         [
             .nodes[] as $output
             | $output.nodes[]
@@ -75,7 +80,7 @@ get_workspaces() {
 }
 
 get_outputs() {
-    swaymsg -t get_tree | jq '
+    $SWAYMSG -t get_tree | jq '
         reduce .nodes[] as $output ({}; . + { ($output.name): { current_workspace: ($output.current_workspace | tonumber? // $output.current_workspace) } })
     '
 }
@@ -104,7 +109,7 @@ if [[ $1 == 'outputs' ]]; then
     # Initial output data
     eww update outputs="$(get_outputs_workspaces)"
 
-    swaymsg -m -t subscribe '["workspace","window", "output"]' | while read -r line; do
+    $SWAYMSG -m -t subscribe '["workspace","window", "output"]' | while read -r line; do
         eww update outputs="$(get_outputs_workspaces)"
     done
 fi
@@ -113,7 +118,7 @@ if [[ $1 == 'monitor' ]]; then
     # Initialize existing monitors
     handle_monitor
 
-    swaymsg -m -t subscribe '["output"]' | while read -r line; do
+    $SWAYMSG -m -t subscribe '["output"]' | while read -r line; do
         handle_monitor
     done
 fi
