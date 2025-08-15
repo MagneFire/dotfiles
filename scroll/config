@@ -111,7 +111,7 @@ set $right Right
 
 #     # Overview
     bindsym --no-repeat $mod+tab scale_workspace overview
-    bindsym --whole-window button8 scale_workspace overview
+    # bindsym --whole-window button8 scale_workspace overview
 
 #     # Jump
 #     # jump_labels_color #9e1530FF
