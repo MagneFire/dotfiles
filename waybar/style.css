@@ -25,6 +25,7 @@ button {
 #window,
 #workspaces,
 #custom-sep,
+#mode,
 #custom-playerctl,
 #cava
 {
@@ -39,6 +40,7 @@ button {
 #network,
 #pulseaudio,
 #tray,
+#mode,
 #custom-maximized,
 #custom-notifications,
 #custom-powermenu {
@@ -146,6 +148,8 @@ window#waybar {
 #window,
 #battery,
 #cava,
+#mode,
+#custom-windows_widget,
 #custom-powermenu {
     font-size: 15px;
     font-weight: bolder;
