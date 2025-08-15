@@ -17,6 +17,7 @@
         "battery",
         "custom/notifications",
         "tray",
+        "privacy",
         "custom/powermenu",
         "clock"
     ],
@@ -59,6 +60,18 @@
     "bluetooth": {
         "format": "",
         "on-click": "blueman-manager"
+    },
+    "privacy": {
+        "icon-spacing": 2,
+        "icon-size": 18,
+        "modules": [
+        {
+            "type": "screenshare"
+        },
+        {
+            "type": "audio-in"
+        }
+        ]
     },
     "custom/maximized": {
         "format": "{}",
