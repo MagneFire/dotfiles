@@ -10,6 +10,9 @@
         "sway/mode",
         "custom/playerctl"
     ],
+    "modules-center": [
+        "cava"
+    ],
     "modules-right": [
         "battery",
         "custom/notifications",
@@ -20,6 +23,18 @@
     "sway/mode": {
         "format": "\udb80\udf35 {}",
         "max-length": 50
+    },
+    "cava": {
+        "framerate": 30,
+        "autosens": 1,
+        "bars": 35,
+        "method": "pipewire",
+        "source": "auto",
+        "bar_delimiter": 0,
+        "input_delay": 2,
+        "sleep_timer": 2,
+        "hide_on_silence": true,
+        "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ]
     },
     "sway/workspaces": {
         "format": "{icon}",
