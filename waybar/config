@@ -18,12 +18,24 @@
         "custom/notifications",
         "tray",
         "privacy",
+        "group/brightness",
         "custom/powermenu",
         "clock"
     ],
     "sway/mode": {
         "format": "\udb80\udf35 {}",
         "max-length": 50
+    },
+    "group/brightness": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/brightness",
+            "backlight/slider"
+        ]
     },
     "cava": {
         "framerate": 30,
@@ -36,6 +48,13 @@
         "sleep_timer": 2,
         "hide_on_silence": true,
         "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ]
+    },
+    "backlight/slider": {
+        "min": 1
+    },
+    "custom/brightness": {
+        "format": "󰃠",
+        "tooltip": false
     },
     "sway/workspaces": {
         "format": "{icon}",
