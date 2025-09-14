@@ -47,6 +47,9 @@ enabled=true
 
 [system]
 command_lock=loginctl lock-session
+command_logout=loginctl terminate-user $USER
+command_poweroff=systemctl -i poweroff
+command_reboot=systemctl -i reboot
 enabled=true
 
 [vpn]
