@@ -47,6 +47,9 @@ enabled=true
 
 [system]
 command_lock=loginctl lock-session
+command_logout=swaymsg exit
+command_poweroff=halt -pd
+command_reboot=reboot
 enabled=true
 
 [vpn]
