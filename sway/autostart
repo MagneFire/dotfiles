@@ -23,6 +23,9 @@ swaync &
 $scripts/waybar &
 # $scripts/restart-eww &
 
+# Focus on window activation
+$HOME/.config/sway/scripts/focus_on_urgent &
+
 ## Gnome authentication/keyring
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
