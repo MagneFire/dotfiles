@@ -1,0 +1,6 @@
+#!/bin/bash
+# Move focus to window marked with 'urgent'. Useful if windows are activated.
+
+swaymsg -mt subscribe '["window"]' |
+    jq --unbuffered 'select(.change == "urgent").container.id' |
+    xargs -I{} swaymsg '[con_id={} urgent=latest]' focus &>/dev/null
