@@ -72,7 +72,7 @@ get_workspaces() {
                 id: .name |  tonumber? // .,
                 screen: $output.name,
                 windows: (
-                [ .. | objects | select(.type == "con" and .name?) ] | length
+                [ .. | objects | select((.type == "con" or .type == "floating_con") and .name?) ] | length
                 )
             }
         ]
