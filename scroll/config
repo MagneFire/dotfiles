@@ -1,4 +1,9 @@
 include $HOME/.config/sway/config.d/*
 include $HOME/.config/scroll/config.d/*
+
 include $HOME/.config/scroll/user/*
 include $HOME/.config/scroll/outputs
+include $HOME/.config/sway/user/*
+include $HOME/.config/sway/outputs
+include /etc/sway/outputs/*
+
