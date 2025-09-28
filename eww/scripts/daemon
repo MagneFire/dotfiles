@@ -12,12 +12,15 @@ if [ $sway_running ]; then
     echo "Running on Sway..."
 
     $HOME/.config/eww/scripts/daemon_sway &
+    $HOME/.config/eww/scripts/sway outputs &
     $HOME/.config/eww/scripts/sway monitor &
-    $HOME/.config/eww/scripts/sway outputs
 elif [ $hyprland_running ]; then
     echo "Running on Hyprland..."
 
     $HOME/.config/eww/scripts/daemon_hyprland &
+    $HOME/.config/eww/scripts/hyprland outputs &
     $HOME/.config/eww/scripts/hyprland monitor &
-    $HOME/.config/eww/scripts/hyprland outputs
 fi
+
+# Leave script running until jobs exit.
+wait < <(jobs -p)
