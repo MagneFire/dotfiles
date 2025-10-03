@@ -31,7 +31,7 @@
 )
 
 (defwidget closer [window]
-  (eventbox :onclick "eww close ${window} && eww close ${window}-closer"))
+  (eventbox :onclick "eww --no-daemonize close ${window} && eww close ${window}-closer"))
 
 (defwindow hyprmsn-closer [monitor]
   :monitor monitor

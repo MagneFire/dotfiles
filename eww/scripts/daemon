@@ -8,19 +8,45 @@ if echo $SWAYSOCK &>/dev/null; then
     sway_running=1
 fi
 
-if [ $sway_running ]; then
-    echo "Running on Sway..."
+kill_all() {
+    JOBS=$(jobs -p)
+    echo $JOBS
+    pkill -9 $JOBS
+    kill -9 $JOBS
+    echo $JOBS | xargs -I{} kill -- -{}
+}
 
-    $HOME/.config/eww/scripts/daemon_sway &
-    $HOME/.config/eww/scripts/sway outputs &
-    $HOME/.config/eww/scripts/sway monitor &
-elif [ $hyprland_running ]; then
-    echo "Running on Hyprland..."
+trap 'kill_all; exit' INT
 
-    $HOME/.config/eww/scripts/daemon_hyprland &
-    $HOME/.config/eww/scripts/hyprland outputs &
-    $HOME/.config/eww/scripts/hyprland monitor &
-fi
+run_daemon() {
+    echo "EWW: Starting daemon"
+    eww daemon --no-daemonize &
 
-# Leave script running until jobs exit.
-wait < <(jobs -p)
+    if [ $sway_running ]; then
+        echo "Running on Sway..."
+
+        $HOME/.config/eww/scripts/daemon_sway &
+        $HOME/.config/eww/scripts/sway outputs &
+        $HOME/.config/eww/scripts/sway monitor &
+    elif [ $hyprland_running ]; then
+        echo "Running on Hyprland..."
+
+        $HOME/.config/eww/scripts/daemon_hyprland &
+        $HOME/.config/eww/scripts/hyprland outputs &
+        $HOME/.config/eww/scripts/hyprland monitor &
+    fi
+}
+
+run_daemon
+
+sleep 1
+
+while true; do
+    eww_running=$(eww state 2> /dev/null)
+    if [ ! $? -eq 0 ]; then
+        echo "EWW: Detected runtime issue, restarting"
+        kill_all
+        run_daemon
+    fi
+    sleep 1
+done

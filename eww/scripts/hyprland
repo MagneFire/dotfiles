@@ -19,7 +19,7 @@ open_desktop() {
 
     fi
 
-    eww open --screen "$screen_id" --id "$screen_id" $window
+    eww --no-daemonize open --screen "$screen_id" --id "$screen_id" $window
 }
 
 monitor() {
@@ -70,7 +70,7 @@ if [[ $1 == 'workspaces' ]]; then
 
 
         echo "{\"workspaces\": $(workspaces),\"active\": $active,\"active_empty\": $active_empty}" 
-        eww update workspaces="{\"workspaces\": $(workspaces),\"active\": $active,\"active_empty\": $active_empty}"
+        eww --no-daemonize update workspaces="{\"workspaces\": $(workspaces),\"active\": $active,\"active_empty\": $active_empty}"
     done
 fi
 

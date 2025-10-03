@@ -25,17 +25,17 @@ open_desktop() {
     fi
 
     # Open the specified window on the screen
-    eww open --screen "$screen_id" --id "$screen_id" --arg screen=$screen_id $window
+    eww --no-daemonize open --screen "$screen_id" --id "$screen_id" --arg screen=$screen_id $window
 }
 
 close_desktop() {
     screen_id=$1
     echo "Closing window on $screen_id"
-    eww close "$screen_id"
+    eww --no-daemonize close "$screen_id"
 }
 
 handle_monitor() {
-    ACTIVE=$(eww active-windows)
+    ACTIVE=$(eww --no-daemonize active-windows)
     MONITORS=$($SWAYMSG -t get_outputs | jq -r '.[].name')
 
     while IFS= read -r active; do
@@ -107,10 +107,10 @@ get_outputs_workspaces() {
 
 if [[ $1 == 'outputs' ]]; then
     # Initial output data
-    eww update outputs="$(get_outputs_workspaces)"
+    eww --no-daemonize update outputs="$(get_outputs_workspaces)"
 
     $SWAYMSG -m -t subscribe '["workspace","window", "output"]' | while read -r line; do
-        eww update outputs="$(get_outputs_workspaces)"
+        eww --no-daemonize update outputs="$(get_outputs_workspaces)"
     done
 fi
 
