@@ -1,26 +1,74 @@
 #!/bin/bash
 
+# Enable job control
+set -m
+
 if hyprctl activeworkspace -j &>/dev/null; then
     hyprland_running=1
 fi
 
-if echo $SWAYSOCK &>/dev/null; then
+if [ -n "$SWAYSOCK" ]; then
     sway_running=1
 fi
 
-if [ $sway_running ]; then
-    echo "Running on Sway..."
+declare -a ALL_PIDS=()
 
-    $HOME/.config/eww/scripts/daemon_sway &
-    $HOME/.config/eww/scripts/sway outputs &
-    $HOME/.config/eww/scripts/sway monitor &
-elif [ $hyprland_running ]; then
-    echo "Running on Hyprland..."
+add_pid() {
+    ALL_PIDS+=($1)
+}
 
-    $HOME/.config/eww/scripts/daemon_hyprland &
-    $HOME/.config/eww/scripts/hyprland outputs &
-    $HOME/.config/eww/scripts/hyprland monitor &
-fi
+kill_all() {
+    for pid in "${ALL_PIDS[@]}"; do
+        if kill -0 "$pid" 2>/dev/null; then
+            # Kill the entire process group (negative PID)
+            kill -TERM "-$pid" 2>/dev/null
+            sleep 0.1
+            # Force kill if still running
+            kill -KILL "-$pid" 2>/dev/null
+        fi
+    done
 
-# Leave script running until jobs exit.
-wait < <(jobs -p)
+    ALL_PIDS=()
+}
+
+trap 'kill_all; exit 0' INT TERM EXIT
+
+run_daemon() {
+    echo "EWW: Starting daemon"
+
+    eww daemon --no-daemonize &
+    add_pid $!
+
+    if [ -n "$sway_running" ]; then
+        echo "Running on Sway..."
+
+        $HOME/.config/eww/scripts/daemon_sway &
+        add_pid $!
+        $HOME/.config/eww/scripts/sway outputs &
+        add_pid $!
+        $HOME/.config/eww/scripts/sway monitor &
+        add_pid $!
+    elif [ -n "$hyprland_running" ]; then
+        echo "Running on Hyprland..."
+
+        $HOME/.config/eww/scripts/daemon_hyprland &
+        add_pid $!
+        $HOME/.config/eww/scripts/hyprland outputs &
+        add_pid $!
+        $HOME/.config/eww/scripts/hyprland monitor &
+        add_pid $!
+    fi
+}
+
+run_daemon
+
+sleep 1
+
+while true; do
+    if ! eww ping &>/dev/null; then
+        echo "EWW: Detected runtime issue, restarting"
+        kill_all
+        run_daemon
+    fi
+    sleep 1
+done

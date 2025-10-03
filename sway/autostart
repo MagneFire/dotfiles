@@ -14,7 +14,6 @@ swayosd-server &
 hypridle &
 
 # Wallpaper and Window switcher daemon
-eww daemon
 $HOME/.config/eww/scripts/daemon &
 
 # Sway Notification Center

@@ -30,7 +30,7 @@ take_screenshot() {
     window=$(hyprctl -j clients | jq -r '.[] | select(.address == "0x'$address'")')
     workspace=$(echo $window | jq -r '.workspace.id')
 
-    open_state=`eww active-windows | grep hyprmsn`
+    open_state=`eww --no-daemonize active-windows | grep hyprmsn`
 
     if [[ ! -z $open_state ]]; then
         echo "Skipping screenshot (switcher is open)"
@@ -77,7 +77,7 @@ update_windows() {
 
     result_old=$result
 
-    eww update windows="$result"
+    eww --no-daemonize update windows="$result"
 }
 
 handle_window() {
