@@ -22,6 +22,9 @@ shikane &
 # Sway Notification Center
 swaync &
 
+# Systray compatibility for X apps (Wine)
+xembedsniproxy &
+
 $scripts/waybar &
 # $scripts/restart-eww &
 
