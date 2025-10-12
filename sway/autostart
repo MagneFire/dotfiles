@@ -16,6 +16,9 @@ hypridle &
 # Wallpaper and Window switcher daemon
 $HOME/.config/eww/scripts/daemon &
 
+# Dynamic Monitor management
+shikane &
+
 # Sway Notification Center
 swaync &
 
