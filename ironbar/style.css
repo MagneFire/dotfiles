@@ -1,0 +1,144 @@
+/* === CSS Variables === */
+
+:root {
+    /* Standard 16-color palette as CSS variables */
+    --color0: #0e110c;
+    --color1: #7A8140;
+    --color2: #949437;
+    --color3: #4C7488;
+    --color4: #6F8F9E;
+    --color5: #718D96;
+    --color6: #96A5AA;
+    --color7: #c1cacd;
+    --color8: #878d8f;
+    --color9: #7A8140;
+    --color10: #949437;
+    --color11: #4C7488;
+    --color12: #6F8F9E;
+    --color13: #718D96;
+    --color14: #96A5AA;
+    --color15: #c1cacd;
+
+    --color-foreground: #c1cacd;
+    --color-white: #fff;
+    --color-popup-background: #2D2D2DEE;
+
+    --margin-sm: 0.5em;
+    --margin-xs: 0.25em;
+    --size-xxl: 2.6em;
+    --size-xl: 2.2em;
+    --size-lg: 1.5em;
+    --size-md: 16px;
+}
+
+/* === Global Reset === */
+
+* {
+    font-family: 'sans-serif', 'Symbols Nerd Font Mono';
+    font-size: 16px;
+    text-shadow: none;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+.background {
+    background-color: transparent;
+}
+
+button {
+    padding-left: var(--margin-sm);
+    padding-right: var(--margin-sm);
+}
+
+button, label {
+    box-shadow: none;
+    background: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--color-white);
+}
+
+#bar {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+}
+
+.popup {
+    padding: 1em;
+}
+
+/* === Popovers & Sliders === */
+
+popover,
+popover contents {
+    border-radius: 12px;
+}
+
+popover contents {
+    background: var(--color-popup-background);
+}
+
+slider {
+    border-radius: 100%;
+}
+
+
+/* === Modules === */
+
+.tray,
+.notifications,
+.battery,
+.clock,
+.volume,
+.music {
+    opacity: 0.8;
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.tray .item {
+    padding: 0 4px;
+}
+
+.tray .item * {
+    -gtk-icon-size: 21px;
+}
+
+.notifications > .text-button {
+    min-width: 0;
+}
+
+.text-button {
+    padding: 0 4px;
+}
+
+.clock,
+.music {
+    padding: 0 10px;
+}
+
+/* === Workspaces === */
+
+.workspaces .item {
+    box-shadow: inset 0 2px;
+    color: var(--color5);
+}
+
+.workspaces .item.focused {
+    color: var(--color-foreground);
+}
+
+.workspaces .item:hover,
+.workspaces .item.inactive {
+    box-shadow: inset 0 2px;
+}
+
+.workspaces .text-button {
+    min-height: 2px;
+    padding: 0 16px;
+}
+
+.workspaces .text-button label {
+    font-size: 0;
+}

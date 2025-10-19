@@ -1,0 +1,110 @@
+let {
+    $lyrics = {
+      type = "script"
+      cmd = "lrcsnc-lbl-client | jq --unbuffered -r '.text'"
+      mode = "watch"
+    }
+    $workspaces = {
+        type = "workspaces"
+        class = "module module-workspaces"
+        focused_class = "focused"
+        urgent_class = "urgent"
+        all_monitors = false
+        format = "{id}"
+        on_click = "focus"
+    }
+
+    $clock = {
+        type = "clock"
+        class = "module module-clock"
+        format = "%d %B %R"
+    }
+
+    $tray = {
+        type = "tray"
+        class = "module module-tray"
+        icon_size = 24
+        direction = "h"
+    }
+
+    $music = {
+        type = "music"
+        player_type = "mpris"
+        format = "󰝚 {title}"
+        show_status_icon = false
+        truncate.mode = "end"
+        truncate.max_length = 75
+        icons.play = ""
+        icons.pause = "󰏥"
+        icons.prev = "󰙣"
+        icons.next = "󰙡"
+        icons.volume = "󰕾"
+    }
+
+    $battery = {
+        type = "battery"
+        icon_size = 14
+        format = "{percentage}%"
+    }
+
+    $network = {
+        type = "network_manager"
+        icon_size = 14
+    }
+ 
+    $bindmode = {
+        type = "bindmode"
+        truncate = "start"
+    }
+
+    $volume = {
+        name = "som"
+        type = "volume"
+        format = "{icon}"
+        max_volume = 100
+        icons.volume_high = "󰕾"
+        icons.volume_medium = "󰖀"
+        icons.volume_low = "󰕿"
+        icons.muted = "󰖁"
+    }
+
+    $notifications = {
+        type = "notifications"
+        show_count = false
+        icons.closed_none = "󰂚"
+        icons.closed_some = "󰂚"
+        icons.closed_dnd = "󰂛"
+        icons.open_none = "󰂚"
+        icons.open_some = "󰂚"
+        icons.open_dnd = "󰂛"
+    }
+
+    $left_widgets = [ $bindmode $music $lyrics ]
+    $center_widgets = [ $workspaces ]
+    $right_widgets = [ $battery $notifications $tray $volume  $clock ]
+}
+
+
+in {
+    monitors.eDP-1 = {
+        position = "top"
+        height = 32
+        layer = "top"
+        // Remove sway inner gap
+        margin.bottom = -5
+        icon_theme = "Papirus"
+
+        start = $left_widgets
+        center = $center_widgets
+        end = $right_widgets
+    }
+
+    position = "top"
+    height = 1
+    layer = "top"
+    icon_theme = "Papirus"
+
+    start = [  ]
+    center = [ $workspaces ]
+    end = [ ]
+}
