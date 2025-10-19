@@ -25,8 +25,7 @@ swaync &
 # Systray compatibility for X apps (Wine)
 xembedsniproxy &
 
-$scripts/waybar &
-# $scripts/restart-eww &
+ironbar &
 
 # Focus on window activation
 $HOME/.config/sway/scripts/focus_on_urgent &
@@ -34,9 +33,6 @@ $HOME/.config/sway/scripts/focus_on_urgent &
 ## Gnome authentication/keyring
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
-
-# Audio systray icon
-pasystray --notify=none &
 
 # Touchpad gestures
 fusuma &
