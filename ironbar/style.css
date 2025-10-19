@@ -1,0 +1,117 @@
+@define-color foreground #c1cacd;
+@define-color background rgba(0, 0, 0, 0.5);
+@define-color cursor #c1cacd;
+
+@define-color color0 #0e110c;
+@define-color color1 #7A8140;
+@define-color color2 #949437;
+@define-color color3 #4C7488;
+@define-color color4 #6F8F9E;
+@define-color color5 #718D96;
+@define-color color6 #96A5AA;
+@define-color color7 #c1cacd;
+@define-color color8 #878d8f;
+@define-color color9 #7A8140;
+@define-color color10 #949437;
+@define-color color11 #4C7488;
+@define-color color12 #6F8F9E;
+@define-color color13 #718D96;
+@define-color color14 #96A5AA;
+@define-color color15 #c1cacd;
+
+
+@define-color color_bg alpha(#2d2d2d, 0.7);
+@define-color color_bg_dark alpha(#1c1c1c, 0.7);
+@define-color color_border alpha(#424242, 0.7);
+@define-color color_border_active alpha(#6699cc, 0.7);
+@define-color color_text #ffffff;
+@define-color color_urgent #8f0a0a;
+
+@define-color custom-primary #EBE6E6;         /* Main text */
+@define-color custom-secondary #DBD3D3;           /* Sub-text (Wallust's light gray/white) */
+@define-color custom-background #0F1214;       /* Main bar background */
+@define-color custom-surface #383A3C;            /* Module background (Wallust's darkest gray/black) */
+@define-color custom-border #999394;             /* General border (Wallust's medium gray) */
+@define-color custom-accent #966166;             /* Primary accent (Wallust's blue) */
+@define-color custom-highlight #02141B;            /* Highlight/Error (Wallust's red) */
+
+
+* {
+    font-family: 'Fira Code', 'Symbols Nerd Font Mono';
+    text-shadow: none;
+    border: none;
+    border-radius: 0;
+}
+
+.background {
+    background-color: transparent;
+}
+
+button, label {
+    box-shadow: none;
+    background: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: @color_text;
+}
+
+#bar {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+}
+
+.workspaces .item {
+    box-shadow: inset 0 2px;
+    color: @color5;
+}
+
+.workspaces .item.focused {
+    color: @foreground;
+}
+
+.workspaces .item:hover {
+    box-shadow: inset 0 2px;
+}
+
+.workspaces .item.inactive {
+    box-shadow: inset 0 2px;
+}
+
+.workspaces .text-button label {
+    font-size: 0;
+}
+
+.workspaces .text-button {
+    min-height: 2px;
+    padding: 0 16px;
+}
+
+.tray,
+.notifications,
+.battery,
+.clock,
+.volume {
+    opacity: 0.8;
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.tray .item {
+    padding: 0 4px;
+}
+
+.tray .item * {
+    -gtk-icon-size: 21px;
+}
+
+.notifications > .text-button {
+    min-width: 0;
+}
+
+.text-button {
+    padding: 0 4px;
+}
+
+.clock {
+    padding: 0 16px;
+}

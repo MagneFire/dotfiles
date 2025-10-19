@@ -1,0 +1,89 @@
+let {
+    $workspaces = {
+        type = "workspaces"
+        class = "module module-workspaces"
+        focused_class = "focused"
+        urgent_class = "urgent"
+        all_monitors = false
+        format = "{id}"
+        on_click = "focus"
+    }
+
+    $clock = {
+        type = "clock"
+        class = "module module-clock"
+        format = "%d %B %R"
+    }
+
+    $tray = {
+        type = "tray"
+        class = "module module-tray"
+        icon_size = 24
+        direction = "h"
+    }
+
+    $battery = {
+        type = "battery"
+        icon_size = 14
+        format = "{percentage}%"
+    }
+
+    $network = {
+        type = "network_manager"
+        icon_size = 14
+    }
+ 
+    $bindmode = {
+        type = "bindmode"
+        truncate = "start"
+    }
+
+    $volume = {
+        name = "som"
+        type = "volume"
+        format = "{icon}"
+        max_volume = 100
+        icons.volume_high = "󰕾"
+        icons.volume_medium = "󰖀"
+        icons.volume_low = "󰕿"
+        icons.muted = "󰖁"
+    }
+
+    $notifications = {
+        type = "notifications"
+        icons.closed_none = "󰂚"
+        icons.closed_some = "󰂚"
+        icons.closed_dnd = "󰂛"
+        icons.open_none = "󰂚"
+        icons.open_some = "󰂚"
+        icons.open_dnd = "󰂛"
+    }
+
+    $left_widgets = [ ]
+    $center_widgets = [ $workspaces ]
+    $right_widgets = [ $battery $notifications $tray $volume  $clock ]
+}
+
+
+in {
+    monitors.eDP-1 = {
+        position = "top"
+        height = 37
+        layer = "top"
+        icon_theme = "Papirus"
+
+        start = $left_widgets
+        center = $center_widgets
+        end = $right_widgets
+    }
+
+    position = "top"
+    height = 1
+    exclusive = false
+    layer = "top"
+    icon_theme = "Papirus"
+
+    start = [  ]
+    center = [ $workspaces ]
+    end = [ ]
+}
