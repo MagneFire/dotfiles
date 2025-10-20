@@ -22,6 +22,18 @@ let {
         direction = "h"
     }
 
+    $music = {
+        type = "music"
+        player_type = "mpris"
+        format = "󰝚 {title} / {artist}"
+        show_status_icon = false
+        icons.play = ""
+        icons.pause = "󰏥"
+        icons.prev = "󰙣"
+        icons.next = "󰙡"
+        icons.volume = "󰕾"
+    }
+
     $battery = {
         type = "battery"
         icon_size = 14
@@ -59,7 +71,7 @@ let {
         icons.open_dnd = "󰂛"
     }
 
-    $left_widgets = [ ]
+    $left_widgets = [ $bindmode $music ]
     $center_widgets = [ $workspaces ]
     $right_widgets = [ $battery $notifications $tray $volume  $clock ]
 }

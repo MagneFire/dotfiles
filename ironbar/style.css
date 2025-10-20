@@ -19,6 +19,38 @@
 @define-color color14 #96A5AA;
 @define-color color15 #c1cacd;
 
+@define-color srcery-black #1C1B19;
+@define-color srcery-red #EF2F27;
+@define-color srcery-green #519F50;
+@define-color srcery-yellow #FBB829;
+@define-color srcery-blue #2C78BF;
+@define-color srcery-magenta #E02C6D;
+@define-color srcery-cyan #0AAEB3;
+@define-color srcery-white #BAA67F;
+@define-color srcery-bright-black #918175;
+@define-color srcery-bright-red #F75341;
+@define-color srcery-bright-green #98BC37;
+@define-color srcery-bright-yellow #FED06E;
+@define-color srcery-bright-blue #68A8E4;
+@define-color srcery-bright-magenta #FF5C8F;
+@define-color srcery-bright-cyan #2BE4D0;
+@define-color srcery-bright-white #FCE8C3;
+@define-color srcery-orange #FF5F00;
+@define-color srcery-bright-orange #FF8700;
+@define-color srcery-teal #008080;
+@define-color srcery-hard-black #121212;
+@define-color srcery-xgray1 #262626;
+@define-color srcery-xgray2 #303030;
+@define-color srcery-xgray3 #3A3A3A;
+@define-color srcery-xgray4 #444444;
+@define-color srcery-xgray5 #4E4E4E;
+@define-color srcery-xgray6 #585858;
+@define-color srcery-xgray7 #626262;
+@define-color srcery-xgray8 #6C6C6C;
+@define-color srcery-xgray9 #767676;
+@define-color srcery-xgray10 #808080;
+@define-color srcery-xgray11 #8A8A8A;
+@define-color srcery-xgray12 #949494;
 
 @define-color color_bg alpha(#2d2d2d, 0.7);
 @define-color color_bg_dark alpha(#1c1c1c, 0.7);
@@ -90,7 +122,8 @@ button, label {
 .notifications,
 .battery,
 .clock,
-.volume {
+.volume,
+.music {
     opacity: 0.8;
     font-weight: bolder;
     font-size: 15px;
@@ -114,4 +147,68 @@ button, label {
 
 .clock {
     padding: 0 16px;
+}
+
+/* --- Music Popup Styling --- */
+.popup-music {
+    background-color: alpha(@custom-background, 0.3);
+    padding: 15px;
+    border-radius: 12px;
+    /* border: 1px solid @custom-border; */
+    box-shadow: none;
+    min-width: 250px;
+}
+
+/* Album art */
+.popup-music .album-art {
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.popup-music .title .label {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* Playback controls container */
+.popup-music .controls {
+ padding-left: 60px;
+    margin: 10px 0;
+}
+.popup-music .controls button {
+    color: @custom-primary;
+    background-color: transparent;
+    padding: 5px;
+    margin: 0 5px;
+    border-radius: 8px;
+}
+.popup-music .controls button:hover {
+    background-color: alpha(@custom-surface, 0.7);
+    color: @custom-accent;
+}
+
+/* --- NEW: Hide the volume slider --- */
+/* Hide the volume slider inside the music popup */
+.popup-music .volume {
+    /* In GTK CSS, 'display: none;' is not always effective. */
+    /* This combination of properties is the correct way to fully collapse a widget. */
+    /* min-height: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0; */
+}
+/* --- END NEW --- */
+
+/* Song progress bar (slider) */
+.popup-music .progress .slider trough {
+    background-color: alpha(@custom-surface, 0.5);
+    border-radius: 4px;
+    min-height: 8px;
+}
+.popup-music .progress .slider highlight {
+    background-color: @custom-accent;
+    border-radius: 4px;
+}
+.popup-music .progress .label {
+    margin-top: 3px;
 }
