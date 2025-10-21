@@ -26,6 +26,8 @@ swaync &
 xembedsniproxy &
 
 ironbar &
+# Restart ironbar to fix duplicate icons
+bash -c "sleep 5 && killall ironbar && ironbar" &
 
 # Focus on window activation
 $HOME/.config/sway/scripts/focus_on_urgent &
