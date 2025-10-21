@@ -63,6 +63,7 @@ let {
 
     $notifications = {
         type = "notifications"
+        show_count = false
         icons.closed_none = "󰂚"
         icons.closed_some = "󰂚"
         icons.closed_dnd = "󰂛"
@@ -80,8 +81,10 @@ let {
 in {
     monitors.eDP-1 = {
         position = "top"
-        height = 37
+        height = 32
         layer = "top"
+        // Remove sway inner gap
+        margin.bottom = -5
         icon_theme = "Papirus"
 
         start = $left_widgets
@@ -91,7 +94,6 @@ in {
 
     position = "top"
     height = 1
-    exclusive = false
     layer = "top"
     icon_theme = "Papirus"
 

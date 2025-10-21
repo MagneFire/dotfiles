@@ -73,6 +73,7 @@
     text-shadow: none;
     border: none;
     border-radius: 0;
+    min-height: 0;
 }
 
 .background {
@@ -145,8 +146,9 @@ button, label {
     padding: 0 4px;
 }
 
-.clock {
-    padding: 0 16px;
+.clock,
+.music {
+    padding: 0 10px;
 }
 
 /* --- Music Popup Styling --- */
