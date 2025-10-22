@@ -1,9 +1,8 @@
 #!/bin/bash
 # Heavily inspired by https://github.com/rehanzo/swayhide
-# Notably this version adds support for executing commands as root
+# Adds support for executing commands as root
 
 command_args=("$@")
-cmd="${command_args[*]}"
 
 # Get current window id
 conid=$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true) | .id')
@@ -18,34 +17,28 @@ swaymsg -m -t subscribe '["window"]' > >(
     first=1
     jq --unbuffered -cr 'select(.change == "new")' | \
     while read -r line; do
-        # Only hide the window once
         if [[ $first -eq 1 ]]; then
-            swaymsg "[con_id=$conid] focus; move scratchpad"
-            swaymsg "split none"
+            swaymsg "[con_id=$conid] focus; move scratchpad" >/dev/null
+            swaymsg "split none" >/dev/null
+            first=0
         fi
-        first=0
     done
 ) &
 swaymsg_id=$!
 
-# Split container and set layout
-swaymsg "split v"
+swaymsg "split v" >/dev/null
 
-# Run the command in the background
-eval "$cmd" &
+"${command_args[@]}" &
 process_id=$!
 
-# Wait for the command to finish
-wait $process_id
+wait "$process_id"
 exit_code=$?
 
-# Print exit status
 if [[ $exit_code -ne 0 ]]; then
-    echo "swayhide: $cmd exited with code: $exit_code" >&2
+    echo "swayhide: command exited with code: $exit_code" >&2
 fi
 
-# Restore layout
-swaymsg "[con_id=$conid] focus; floating disable"
+swaymsg "[con_id=$conid] focus; floating disable" >/dev/null
 
-# Stop listening for events, allows proper process exit
-kill $swaymsg_id
+kill "$swaymsg_id" 2>/dev/null
+wait "$swaymsg_id" 2>/dev/null
