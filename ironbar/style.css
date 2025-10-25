@@ -1,93 +1,37 @@
-@define-color foreground #c1cacd;
-@define-color background rgba(0, 0, 0, 0.5);
-@define-color cursor #c1cacd;
-
-@define-color color0 #0e110c;
-@define-color color1 #7A8140;
-@define-color color2 #949437;
-@define-color color3 #4C7488;
-@define-color color4 #6F8F9E;
-@define-color color5 #718D96;
-@define-color color6 #96A5AA;
-@define-color color7 #c1cacd;
-@define-color color8 #878d8f;
-@define-color color9 #7A8140;
-@define-color color10 #949437;
-@define-color color11 #4C7488;
-@define-color color12 #6F8F9E;
-@define-color color13 #718D96;
-@define-color color14 #96A5AA;
-@define-color color15 #c1cacd;
-
-@define-color srcery-black #1C1B19;
-@define-color srcery-red #EF2F27;
-@define-color srcery-green #519F50;
-@define-color srcery-yellow #FBB829;
-@define-color srcery-blue #2C78BF;
-@define-color srcery-magenta #E02C6D;
-@define-color srcery-cyan #0AAEB3;
-@define-color srcery-white #BAA67F;
-@define-color srcery-bright-black #918175;
-@define-color srcery-bright-red #F75341;
-@define-color srcery-bright-green #98BC37;
-@define-color srcery-bright-yellow #FED06E;
-@define-color srcery-bright-blue #68A8E4;
-@define-color srcery-bright-magenta #FF5C8F;
-@define-color srcery-bright-cyan #2BE4D0;
-@define-color srcery-bright-white #FCE8C3;
-@define-color srcery-orange #FF5F00;
-@define-color srcery-bright-orange #FF8700;
-@define-color srcery-teal #008080;
-@define-color srcery-hard-black #121212;
-@define-color srcery-xgray1 #262626;
-@define-color srcery-xgray2 #303030;
-@define-color srcery-xgray3 #3A3A3A;
-@define-color srcery-xgray4 #444444;
-@define-color srcery-xgray5 #4E4E4E;
-@define-color srcery-xgray6 #585858;
-@define-color srcery-xgray7 #626262;
-@define-color srcery-xgray8 #6C6C6C;
-@define-color srcery-xgray9 #767676;
-@define-color srcery-xgray10 #808080;
-@define-color srcery-xgray11 #8A8A8A;
-@define-color srcery-xgray12 #949494;
-
-@define-color color_bg alpha(#2d2d2d, 0.7);
-@define-color color_bg_dark alpha(#1c1c1c, 0.7);
-@define-color color_border alpha(#424242, 0.7);
-@define-color color_border_active alpha(#6699cc, 0.7);
-@define-color color_text #ffffff;
-@define-color color_urgent #8f0a0a;
-
-@define-color custom-primary #EBE6E6;         /* Main text */
-@define-color custom-secondary #DBD3D3;           /* Sub-text (Wallust's light gray/white) */
-@define-color custom-background #0F1214;       /* Main bar background */
-@define-color custom-surface #383A3C;            /* Module background (Wallust's darkest gray/black) */
-@define-color custom-border #999394;             /* General border (Wallust's medium gray) */
-@define-color custom-accent #966166;             /* Primary accent (Wallust's blue) */
-@define-color custom-highlight #02141B;            /* Highlight/Error (Wallust's red) */
+/* === CSS Variables === */
 
 :root {
-    --color-dark-primary: #1c1c1caa;
-    --color-dark-secondary: #2d2d2daa;
+    /* Standard 16-color palette as CSS variables */
+    --color0: #0e110c;
+    --color1: #7A8140;
+    --color2: #949437;
+    --color3: #4C7488;
+    --color4: #6F8F9E;
+    --color5: #718D96;
+    --color6: #96A5AA;
+    --color7: #c1cacd;
+    --color8: #878d8f;
+    --color9: #7A8140;
+    --color10: #949437;
+    --color11: #4C7488;
+    --color12: #6F8F9E;
+    --color13: #718D96;
+    --color14: #96A5AA;
+    --color15: #c1cacd;
 
-    --color-border-dark: #776DE844;
-    --color-border-light: #776DE822;
-
+    --color-foreground: #c1cacd;
     --color-white: #fff;
-    --color-active: #776DE8CC;
-    --color-urgent: #8f0a0a;
-
-    --gradient: #2D2D2DEE;
+    --color-popup-background: #2D2D2DEE;
 
     --margin-sm: 0.5em;
     --margin-xs: 0.25em;
-
     --size-xxl: 2.6em;
     --size-xl: 2.2em;
     --size-lg: 1.5em;
     --size-md: 16px;
 }
+
+/* === Global Reset === */
 
 * {
     font-family: sans-serif;
@@ -102,11 +46,16 @@
     background-color: transparent;
 }
 
+button {
+    padding-left: var(--margin-sm);
+    padding-right: var(--margin-sm);
+}
+
 button, label {
     box-shadow: none;
     background: none;
     background-color: rgba(0, 0, 0, 0);
-    color: @color_text;
+    color: var(--color-white);
 }
 
 #bar {
@@ -115,31 +64,27 @@ button, label {
     box-shadow: none;
 }
 
-.workspaces .item {
-    box-shadow: inset 0 2px;
-    color: @color5;
+.popup {
+    padding: 1em;
 }
 
-.workspaces .item.focused {
-    color: @foreground;
+/* === Popovers & Sliders === */
+
+popover,
+popover contents {
+    border-radius: 12px;
 }
 
-.workspaces .item:hover {
-    box-shadow: inset 0 2px;
+popover contents {
+    background: var(--color-popup-background);
 }
 
-.workspaces .item.inactive {
-    box-shadow: inset 0 2px;
+slider {
+    border-radius: 100%;
 }
 
-.workspaces .text-button label {
-    font-size: 0;
-}
 
-.workspaces .text-button {
-    min-height: 2px;
-    padding: 0 16px;
-}
+/* === Modules === */
 
 .tray,
 .notifications,
@@ -173,28 +118,27 @@ button, label {
     padding: 0 10px;
 }
 
-popover, popover contents {
-    border-radius: 12px;
-    padding: 0;
+/* === Workspaces === */
+
+.workspaces .item {
+    box-shadow: inset 0 2px;
+    color: var(--color5);
 }
 
-popover contents {
-    background: var(--gradient);
+.workspaces .item.focused {
+    color: var(--color-foreground);
 }
 
-slider {
-    border-radius: 100%;
+.workspaces .item:hover,
+.workspaces .item.inactive {
+    box-shadow: inset 0 2px;
 }
 
-button {
-    padding-left: var(--margin-sm);
-    padding-right: var(--margin-sm);
+.workspaces .text-button {
+    min-height: 2px;
+    padding: 0 16px;
 }
 
-#end > * + * {
-    margin-left: var(--margin-sm);
-}
-
-.popup {
-    padding: 1em;
+.workspaces .text-button label {
+    font-size: 0;
 }
