@@ -67,9 +67,31 @@
 @define-color custom-accent #966166;             /* Primary accent (Wallust's blue) */
 @define-color custom-highlight #02141B;            /* Highlight/Error (Wallust's red) */
 
+:root {
+    --color-dark-primary: #1c1c1caa;
+    --color-dark-secondary: #2d2d2daa;
+
+    --color-border-dark: #776DE844;
+    --color-border-light: #776DE822;
+
+    --color-white: #fff;
+    --color-active: #776DE8CC;
+    --color-urgent: #8f0a0a;
+
+    --gradient: #2D2D2DEE;
+
+    --margin-sm: 0.5em;
+    --margin-xs: 0.25em;
+
+    --size-xxl: 2.6em;
+    --size-xl: 2.2em;
+    --size-lg: 1.5em;
+    --size-md: 16px;
+}
 
 * {
-    font-family: 'Fira Code', 'Symbols Nerd Font Mono';
+    font-family: sans-serif;
+    font-size: 16px;
     text-shadow: none;
     border: none;
     border-radius: 0;
@@ -151,66 +173,28 @@ button, label {
     padding: 0 10px;
 }
 
-/* --- Music Popup Styling --- */
-.popup-music {
-    background-color: alpha(@custom-background, 0.3);
-    padding: 15px;
+popover, popover contents {
     border-radius: 12px;
-    /* border: 1px solid @custom-border; */
-    box-shadow: none;
-    min-width: 250px;
-}
-
-/* Album art */
-.popup-music .album-art {
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-.popup-music .title .label {
-    font-size: 1.1em;
-    font-weight: bold;
-}
-
-/* Playback controls container */
-.popup-music .controls {
- padding-left: 60px;
-    margin: 10px 0;
-}
-.popup-music .controls button {
-    color: @custom-primary;
-    background-color: transparent;
-    padding: 5px;
-    margin: 0 5px;
-    border-radius: 8px;
-}
-.popup-music .controls button:hover {
-    background-color: alpha(@custom-surface, 0.7);
-    color: @custom-accent;
-}
-
-/* --- NEW: Hide the volume slider --- */
-/* Hide the volume slider inside the music popup */
-.popup-music .volume {
-    /* In GTK CSS, 'display: none;' is not always effective. */
-    /* This combination of properties is the correct way to fully collapse a widget. */
-    /* min-height: 0;
     padding: 0;
-    margin: 0;
-    opacity: 0; */
 }
-/* --- END NEW --- */
 
-/* Song progress bar (slider) */
-.popup-music .progress .slider trough {
-    background-color: alpha(@custom-surface, 0.5);
-    border-radius: 4px;
-    min-height: 8px;
+popover contents {
+    background: var(--gradient);
 }
-.popup-music .progress .slider highlight {
-    background-color: @custom-accent;
-    border-radius: 4px;
+
+slider {
+    border-radius: 100%;
 }
-.popup-music .progress .label {
-    margin-top: 3px;
+
+button {
+    padding-left: var(--margin-sm);
+    padding-right: var(--margin-sm);
+}
+
+#end > * + * {
+    margin-left: var(--margin-sm);
+}
+
+.popup {
+    padding: 1em;
 }
