@@ -25,8 +25,10 @@ let {
     $music = {
         type = "music"
         player_type = "mpris"
-        format = "󰝚 {title} / {artist}"
+        format = "󰝚 {title}"
         show_status_icon = false
+        truncate.mode = "end"
+        truncate.max_length = 75
         icons.play = ""
         icons.pause = "󰏥"
         icons.prev = "󰙣"
