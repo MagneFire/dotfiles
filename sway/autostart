@@ -25,9 +25,8 @@ swaync &
 # Systray compatibility for X apps (Wine)
 xembedsniproxy &
 
-ironbar &
-# Restart ironbar to fix duplicate icons
-bash -c "sleep 5 && killall ironbar && ironbar" &
+# Bar
+$HOME/.config/ironbar/scripts/daemon &
 
 # Focus on window activation
 $HOME/.config/sway/scripts/focus_on_urgent &
