@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SWAYMSG="swaymsg"
+if echo $SWAYSOCK | grep "scroll" &>/dev/null; then
+    SWAYMSG="scrollmsg"
+fi
+
+$SWAYMSG -m -t subscribe '["output"]' | while read -r line; do
+    echo "ironbar: Monitor configuration changed"
+    touch /tmp/ironbar-signal
+done

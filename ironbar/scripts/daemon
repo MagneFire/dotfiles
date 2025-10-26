@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# Enable job control
+set -m
+
+if hyprctl activeworkspace -j &>/dev/null; then
+    hyprland_running=1
+fi
+
+if [ -n "$SWAYSOCK" ]; then
+    sway_running=1
+fi
+
+SWAYMSG="swaymsg"
+if echo $SWAYSOCK | grep "scroll" &>/dev/null; then
+    SWAYMSG="scrollmsg"
+fi
+
+declare -a ALL_PIDS=()
+
+add_pid() {
+    ALL_PIDS+=($1)
+}
+
+kill_all() {
+    for pid in "${ALL_PIDS[@]}"; do
+        if kill -0 "$pid" 2>/dev/null; then
+            # Kill the entire process group (negative PID)
+            kill -TERM "-$pid" 2>/dev/null
+            sleep 0.1
+            # Force kill if still running
+            kill -KILL "-$pid" 2>/dev/null
+        fi
+    done
+
+    ALL_PIDS=()
+    sleep 1
+}
+
+trap 'kill_all; exit 0' INT TERM EXIT
+
+run_bar() {
+    echo "ironbar: Starting"
+
+    if [ -n "$sway_running" ]; then
+        echo "Running on Sway..."
+
+        $HOME/.config/ironbar/scripts/sway &
+        add_pid $!
+    elif [ -n "$hyprland_running" ]; then
+        echo "Running on Hyprland..."
+
+        $HOME/.config/ironbar/scripts/hyprland &
+        add_pid $!
+    fi
+
+    ironbar &
+    add_pid $!
+    sleep 1
+}
+
+touch /tmp/ironbar-signal
+
+run_bar
+
+# Restart ironbar to fix duplicate icons
+sleep 5
+kill_all
+run_bar
+
+while true; do
+    inotifywait -e create,modify,open /tmp/ironbar-signal
+    echo "ironbar: Received signal"
+
+    kill_all
+    run_bar
+done
