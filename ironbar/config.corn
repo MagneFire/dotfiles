@@ -1,4 +1,9 @@
 let {
+    $lyrics = {
+      type = "script"
+      cmd = "lrcsnc-lbl-client | jq --unbuffered -r '.text'"
+      mode = "watch"
+    }
     $workspaces = {
         type = "workspaces"
         class = "module module-workspaces"
@@ -74,7 +79,7 @@ let {
         icons.open_dnd = "󰂛"
     }
 
-    $left_widgets = [ $bindmode $music ]
+    $left_widgets = [ $bindmode $music $lyrics ]
     $center_widgets = [ $workspaces ]
     $right_widgets = [ $battery $notifications $tray $volume  $clock ]
 }
