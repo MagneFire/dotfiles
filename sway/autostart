@@ -29,7 +29,8 @@ swaync &
 xembedsniproxy &
 
 # Bar
-$HOME/.config/ironbar/scripts/daemon &
+$scripts/waybar &
+# $HOME/.config/ironbar/scripts/daemon &
 
 # Focus on window activation
 $HOME/.config/sway/scripts/focus_on_urgent &
