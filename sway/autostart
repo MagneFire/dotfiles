@@ -58,3 +58,6 @@ kbuildsycoca6
 
 # Fix applications such a GParted (X11 root apps under wayland)
 xhost +SI:localuser:root
+
+# Lyrics server
+lrcsnc &
