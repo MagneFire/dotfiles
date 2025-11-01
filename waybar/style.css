@@ -1,70 +1,25 @@
 @import "colors-waybar.css";
 
-.mainbar * {
-  font-family: 'Fira Code', 'Symbols Nerd Font Mono';
-  font-size: 16px;
-  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+* {
+    font-family: 'sans-serif', 'Symbols Nerd Font Mono';
+    font-size: 16px;
 }
 
-button {
-    min-height: 15px;
+window#waybar {
+    background-color: transparent;
 }
 
-.secondary-bar * {
-  min-height: 0;
-  border: none;
-  font-family: 'Fira Code', 'Symbols Nerd Font Mono';
-  font-size: 0;
-  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+button,
+#custom-notifications {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
-/* All elements */
-#clock,
-#battery,
-#cpu,
-#window,
-#workspaces,
-#custom-sep,
-#mode,
-#custom-playerctl,
-#cava
-{
-    background: @background;
-    opacity: .8;
-    color: @foreground;
-    border-radius: 20px;
-}
-
-#bluetooth,
-#backlight,
-#network,
-#pulseaudio,
-#tray,
-#privacy,
-#mode,
-#custom-maximized,
-#custom-notifications,
-#custom-brightness,
-#custom-powermenu {
-    opacity: .8;
-    color: @foreground;
-}
-
-#cpu,
-#bluetooth,
-#backlight,
-#custom-maximized,
-#custom-notifications,
-#pulseaudio,
-#custom-sep,
-#network,
-#custom-brightness,
-#custom-powermenu {
-    border-radius: 0;
-    border-left: 0;
-    border-right: 0;
-    padding-left: 5px;
-    padding-right: 10px;
+button, label {
+    box-shadow: none;
+    background: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
 }
 
 #backlight-slider trough {
@@ -79,53 +34,64 @@ button {
     background-color: @foreground;
 }
 
-window#waybar {
-    background-color: transparent;
+
+/* === Modules === */
+
+#bluetooth,
+#custom-maximized,
+#backlight,
+#network,
+#cpu,
+#pulseaudio,
+#clock,
+#custom-playerctl,
+#window,
+#battery,
+#cava,
+#mode,
+#custom-powermenu {
+    opacity: 0.8;
+    font-weight: bolder;
+}
+
+#clock,
+#custom-playerctl {
+    padding: 0 10px;
+}
+
+/* === Workspaces === */
+
+#workspaces * {
+    text-shadow: none;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
 }
 
 #workspaces button {
-    color: @color6;
-    font-weight: bolder;
-    transition: all 0.2s ease-in-out;
+    box-shadow: inset 0 2px;
+    color: @color5;
 }
 
 #workspaces button.active,
 #workspaces button.focused {
     color: @foreground;
-    transition: all 0.2s ease-in-out;
 }
 
 #workspaces button:hover {
-    background: #101317;
-    border-radius: 20px;
-    text-shadow: #e2e0ec 0 0 0px;
+    box-shadow: inset 0 2px;
 }
 
-#workspaces.secondary {
-    margin: 0 0 -6px 0;
-    opacity: .8;
-    color: @foreground;
-    border-radius: unset;
-    font-weight: bolder;
-    transition: all 0.2s ease-in-out;
+#workspaces .text-button {
+    min-height: 2px;
+    padding: 0 16px;
 }
 
-#workspaces.secondary button.active,
-#workspaces.secondary button.focused {
-    background-color: @foreground;
-    border-radius: 0;
+#workspaces .text-button label {
+    font-size: 0;
 }
 
-#workspaces.secondary button {
-    background-color: @color5;
-    border-radius: 0;
-}
-
-#clock label{
-    color: @foreground;
-    font-weight:  bolder;
-    font-size: 20px;
-}
+/* === Battery === */
 
 #battery.charging {
     color: #ECE0A8;
@@ -137,58 +103,4 @@ window#waybar {
 
 #battery.critical:not(.charging) {
     color: #E97193;
-}
-
-#workspaces {
-    font-weight: bolder;
-    margin: 5px 5px 0 5px;
-}
-
-#tray {
-    padding: 0px 15px 0px 0px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-}
-
-#cpu,
-#pulseaudio,
-#clock,
-#custom-playerctl,
-#window,
-#battery,
-#cava,
-#mode,
-#custom-powermenu {
-    font-size: 15px;
-    font-weight: bolder;
-    border-radius: 20px;
-    padding: 5px 10px 5px 10px;
-    margin: 5px 5px 0 5px;
-}
-
-#bluetooth,
-#custom-maximized,
-#backlight,
-#network {
-    margin: 5px 0 0 0;
-}
-
-#custom-notifications {
-    border-radius: 20px 0 0 20px;
-    border-right: 0;
-    padding: 5px 10px 5px 10px;
-    margin: 5px 0 0 5px;
-}
-
-#custom-powermenu {
-    border-radius: 0 20px 20px 0;
-    border-left: 0;
-    padding: 3px 15px 5px 5px;
-    margin: 5px 5px 0 0;
 }

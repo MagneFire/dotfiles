@@ -1,25 +1,23 @@
 [{
     "layer": "top",
     "position": "top",
-    "height": 37,
+    "height": 32,
+    "margin-bottom": -5,
     "name": "mainbar",
     "output": "eDP-1",
     "modules-left": [
-        "hyprland/workspaces",
-        "sway/workspaces",
         "sway/mode",
         "custom/playerctl"
     ],
     "modules-center": [
-        "cava"
+        "hyprland/workspaces",
+        "sway/workspaces"
     ],
     "modules-right": [
         "battery",
         "custom/notifications",
         "tray",
         "privacy",
-        "group/brightness",
-        "custom/powermenu",
         "clock"
     ],
     "sway/mode": {
@@ -106,7 +104,7 @@
     "custom/playerctl": {
         "format": "{icon} <span>{0}</span>",
         "return-type": "json",
-        "max-length": 50,
+        "max-length": 75,
         "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
         "on-click-middle": "playerctl play-pause",
         "on-click": "playerctl previous",
