@@ -7,7 +7,8 @@
     "output": "eDP-1",
     "modules-left": [
         "sway/mode",
-        "custom/playerctl"
+        "custom/playerctl",
+        "custom/lrcsnc"
     ],
     "modules-center": [
         "hyprland/workspaces",
@@ -20,6 +21,17 @@
         "privacy",
         "clock"
     ],
+    "custom/lrcsnc": {
+        "exec": "lrcsnc-lbl-client",
+        "return-type": "json",
+        "hide-empty-text": true,
+        "max-length": 100,
+        "tooltip": true,
+        "escape": true,
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous"
+    },
     "sway/mode": {
         "format": "\udb80\udf35 {}",
         "max-length": 50
