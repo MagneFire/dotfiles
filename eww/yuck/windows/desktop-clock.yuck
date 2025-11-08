@@ -26,7 +26,7 @@
 
 (defwidget desktop-clock [screen] (box
     :class "desktop"
-    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
+    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpaper')"
     (desktop-blur :screen screen)
     (company-logo-clock :screen screen)
 ))

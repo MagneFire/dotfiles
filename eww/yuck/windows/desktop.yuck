@@ -6,13 +6,13 @@
 
 (defwidget desktop-blur [screen] (box
     :class "desktop"
-    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest-blur.jpg')"
+    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpaper-blur')"
     :visible {outputs[screen].windows != 0}
 ))
 
 (defwidget desktop [screen] (box
     :class "desktop"
-    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpapers/autumn-red-forest.jpg')"
+    :style "background-image: url('${EWW_CONFIG_DIR}/assets/wallpaper')"
     (desktop-blur :screen screen)
     (company-logo :screen screen)
 ))

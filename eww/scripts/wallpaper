@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# TODO: Watch for wallpaper changes, adjust resolution to largest resolution display, reblur if needed
+
+
+magick ~/.config/eww/assets/wallpaper -blur 0x20 ~/.config/eww/assets/wallpaper-blur
