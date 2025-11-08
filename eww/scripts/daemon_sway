@@ -44,33 +44,67 @@ take_screenshot() {
 }
 
 update_windows() {
-    # echo "Updating windows"
-
-    result="["
+    local new_result="["
+    local obj address title window_img object
 
     while IFS= read -r obj; do
-        # echo $obj
+        {
+            read -r address
+            read -r title
+        } < <(echo "$obj" | jq -r '.id, .name' | sed 's/\r$//')
 
-        address=$(echo $obj | jq -r '.id')
-        title=$(echo "$obj" | jq -r '.name')
         window_img=$(img "$address")
 
-        object="{\"name\": \"$title\", \"image\": \"$window_img\", \"onclick\": \"./scripts/move_to_window.sh '$address'\"}"
+        title=${title//\\/\\\\}  # Escape backslashes first
+        title=${title//\"/\\\"}  # Then escape quotes
+        window_img=${window_img//\\/\\\\}
+        window_img=${window_img//\"/\\\"}
 
-        # echo "Appending $title"
-        result=$(echo "$result$object,")
+        object="{\"name\": \"$title\", \"image\": \"$window_img\", \"onclick\": \"./scripts/move_to_window.sh '$address'\"}"
+        new_result="${new_result}${object},"
     done < <(eval "$windows_cmd")
 
-    result=$(echo "$result" | sed 's/,$/]/g')
+    # Remove trailing comma, add closing bracket
+    new_result="${new_result%,}]"
 
-    if [[ "$result_old" == "$result" ]]; then
-        # echo "Skipping, no changes"
-        return
-    fi
+    [[ "$result_old" == "$new_result" ]] && return
 
-    result_old=$result
+    result_old="$new_result"
 
-    eww --no-daemonize update windows="$result"
+    local window0 window1 window2 window3 window4
+    {
+        read -r window2
+        read -r window3  
+        read -r window1
+        read -r window0
+        read -r window4
+    } < <(echo "$new_result" | jq -c '
+        . as $items |
+        ($items | length) as $n |
+        if $n == 0 then
+            repeat([])
+        else
+            ([($n + 7) / 8 | floor, 5] | min) as $num_windows |
+            ($n / $num_windows | floor) as $base |
+            ($n % $num_windows) as $remainder |
+            [range(0; $num_windows) | if . < $remainder then $base + 1 else $base end] as $sizes |
+            reduce range(0; $num_windows) as $i (
+                {chunks: [], offset: 0};
+                .chunks[$i] = $items[.offset : (.offset + $sizes[$i])] |
+                .offset += $sizes[$i]
+            ) |
+            .chunks as $chunks |
+            # Output windows in priority order (one per line for read)
+            [range(0; 5) | if . < $num_windows then $chunks[.] else [] end][]
+        end
+    ')
+
+    eww --no-daemonize update \
+        windows0="$window0" \
+        windows1="$window1" \
+        windows2="$window2" \
+        windows3="$window3" \
+        windows4="$window4"
 }
 
 swaymsg -m -t subscribe '["window"]' | jq --unbuffered -cr 'select(.change == "focus" or .change == "close")' | while read -r line; do

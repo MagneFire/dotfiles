@@ -1,5 +1,10 @@
 (defvar outputs "[]")
 (defvar windows "[]")
+(defvar windows0 "[]")
+(defvar windows1 "[]")
+(defvar windows2 "[]")
+(defvar windows3 "[]")
+(defvar windows4 "[]")
 
 (defpoll    panel_clock :interval "5s" `date "+%H:%M  |  %b. %d. %A"`)
 (defpoll    hour        :interval "5s" `date "+%H"`)

@@ -16,16 +16,52 @@
     :geometry (geometry
         :x "0%"
         :y "0%"
-        :width "50%"
-        :width "30%"
         :anchor "center center"
     )
     :stacking "overlay"
     :focusable "exclusive"
     :class "container"
     (box :spacing 10
-        (for window in windows
-           (tab :title {window.name} :img {window.image} :onclick {window.onclick})
+         :orientation "vertical"
+        (box :spacing 10
+            :halign "center"
+            :valign "center"
+             :visible {arraylength(windows0) > 0}
+            (for window in windows0
+            (tab :title {window.name} :img {window.image} :onclick {window.onclick})
+            )
+        )
+        (box :spacing 10
+             :halign "center"
+             :valign "center"
+             :visible {arraylength(windows1) > 0}
+            (for window in windows1
+            (tab :title {window.name} :img {window.image} :onclick {window.onclick})
+            )
+        )
+        (box :spacing 10
+             :halign "center"
+             :valign "center"
+             :visible {arraylength(windows2) > 0}
+            (for window in windows2
+            (tab :title {window.name} :img {window.image} :onclick {window.onclick})
+            )
+        )
+        (box :spacing 10
+             :halign "center"
+             :valign "center"
+             :visible {arraylength(windows3) > 0}
+            (for window in windows3
+            (tab :title {window.name} :img {window.image} :onclick {window.onclick})
+            )
+        )
+        (box :spacing 10
+             :halign "center"
+             :valign "center"
+             :visible {arraylength(windows4) > 0}
+            (for window in windows4
+            (tab :title {window.name} :img {window.image} :onclick {window.onclick})
+            )
         )
     )
 )
