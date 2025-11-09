@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-windows=`eww --no-daemonize get windows | jq length`
+windows=`eww --no-daemonize get windows2 | jq length`
 if [[ $windows -eq 0 ]]; then
     echo "No open windows"
     exit
