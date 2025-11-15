@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec env XDG_CURRENT_DESKTOP=gnome /usr/bin/gnome-control-center "$@"
