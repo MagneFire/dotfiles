@@ -39,7 +39,7 @@ run_daemon() {
     eww daemon --no-daemonize &
     add_pid $!
 
-    $HOME/.config/eww/scripts/wallpaper
+    $HOME/.config/eww/scripts/wallpaper &
 
     if [ -n "$sway_running" ]; then
         echo "Running on Sway..."
