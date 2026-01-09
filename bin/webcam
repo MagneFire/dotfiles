@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if ! command -v zenity &> /dev/null; then
+    echo "Error: zenity is not installed." >&2
+    exit 1
+fi
+
+# Build list: real devices + custom option
+choices=()
+while IFS= read -r dev; do
+    choices+=("$dev")
+done < <(ls /dev/video* 2>/dev/null | sort)
+
+# Always add the manual entry at the end
+choices+=("Enter custom device...")
+
+# Show combined selection dialog
+selected=$(zenity --list \
+    --title="Select Video Device" \
+    --text="Choose a video device:" \
+    --column="Device" \
+    --width=400 --height=250 \
+    "${choices[@]}" \
+    2>/dev/null)
+
+[ $? -ne 0 ] && exit 0  # User canceled
+
+# Handle manual input if chosen
+if [ "$selected" = "Enter custom device..." ]; then
+    selected=$(zenity --entry \
+        --title="Custom Video Device" \
+        --text="Enter device path (e.g. /dev/video99):" \
+        --entry-text="/dev/video0" \
+        2>/dev/null)
+    [ $? -ne 0 ] && exit 0
+fi
+
+# Validate
+if [ -z "$selected" ]; then
+    zenity --error --text="No device specified." 2>/dev/null
+    exit 1
+fi
+
+# Optional: warn if device doesn't exist
+if [ ! -e "$selected" ]; then
+    zenity --question \
+        --text="Warning: '$selected' does not exist.\nContinue anyway?" \
+        --ok-label="Yes" --cancel-label="No" \
+        2>/dev/null
+    [ $? -ne 0 ] && exit 0
+fi
+
+mpv --pause=no --hwdec=auto --profile=low-latency --demuxer-lavf-format=video4linux2 --demuxer-lavf-o-set=input_format=mjpeg av://v4l2:$selected --untimed --cache=no --force-seekable=no --no-osc --script-opts-add=osc-visibility=never --really-quiet
