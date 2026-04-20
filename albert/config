@@ -18,6 +18,7 @@ global_handler_enabled=false
 
 [python.python_eval]
 enabled=true
+trigger="py "
 
 [python.vscode_projects]
 enabled=true
@@ -26,6 +27,7 @@ priorityPMPath=5
 priorityPMTag=10
 priorityRecent=15
 recentEnabled=true
+trigger="code "
 
 [ssh]
 enabled=true
