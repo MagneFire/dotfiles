@@ -1,0 +1,38 @@
+#!/bin/bash
+# Niri port of sway/scripts/move_window_workspace.
+# Move the focused column to the next/prev workspace (creating one if needed).
+# Usage: move_window_workspace <next|prev|insert-next|insert-prev>
+
+set -euo pipefail
+
+action="${1:-next}"
+
+case "$action" in
+  next)
+    niri msg action move-column-to-workspace-down
+    ;;
+  prev)
+    niri msg action move-column-to-workspace-up
+    ;;
+  insert-next|insert-prev)
+    direction="${action#insert-}"
+    # Capture the focused window id BEFORE we change focus.
+    win_id=$(niri msg --json focused-window | jq -r '.id // empty')
+    if [[ -z "$win_id" ]]; then
+      echo "no focused window" >&2
+      exit 0
+    fi
+
+    # Create+focus the new workspace adjacent to current.
+    "$HOME/.config/niri/scripts/insert_workspace" "$direction"
+
+    # New workspace is now focused. Move the captured window into it and refocus.
+    new_idx=$(niri msg --json workspaces | jq -r '[.[] | select(.is_focused)][0].idx')
+    niri msg action move-window-to-workspace --window-id "$win_id" "$new_idx"
+    niri msg action focus-window --id "$win_id"
+    ;;
+  *)
+    echo "usage: $0 <next|prev|insert-next|insert-prev>" >&2
+    exit 1
+    ;;
+esac

@@ -1,0 +1,68 @@
+#!/usr/bin/bash
+# Niri port of sway/autostart. Spawned once at session start.
+
+config=$HOME/.config/hypr
+scripts=$config/scripts
+
+# Fix potential slow startup
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_CURRENT_DESKTOP=niri
+
+# Create dummy service to avoid kded6 from breaking the tray
+mkdir -p "$HOME/.local/share/dbus-1/services"
+printf "[D-BUS Service]\nName=org.kde.kded6\nExec=/bin/false" > "$HOME/.local/share/dbus-1/services/org.kde.kded6.service"
+
+# GNOME like OSD for brightness and volume
+swayosd-server &
+
+# Idle daemon (also handles lid via its config — see scripts/lid)
+hypridle &
+
+# Wallpaper and Window switcher daemon
+$HOME/.config/eww/scripts/daemon &
+
+# Dynamic Monitor management
+shikane &
+
+# Notification Center
+swaync &
+
+# Systray compatibility for X apps (Wine)
+xembedsniproxy &
+
+$scripts/waybar &
+
+## Gnome authentication/keyring
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+# Audio systray icon
+pasystray --notify=none &
+
+# Touchpad gestures — fusuma config should call `niri msg action ...` instead
+# of `swaymsg` for gesture-driven workspace switching.
+fusuma &
+
+# NetworkManager applet
+nm-applet &
+
+# Applauncher
+albert &
+
+# Dolphin file associations fix
+kbuildsycoca6
+
+# Fix applications such a GParted (X11 root apps under wayland)
+xhost +SI:localuser:root
+
+# Lyrics server
+lrcsnc &
+
+# Start Slack minimized (--startup)
+flatpak run --socket=wayland com.slack.Slack --ozone-platform-hint=auto --startup &
+
+flatpak run --env=ELECTRON_OZONE_PLATFORM_HINT=auto --socket=wayland com.github.IsmaelMartinez.teams_for_linux --electronCLIFlags="--ozone-platform-hint=auto" --minimized &
+
+env ELECTRON_OZONE_PLATFORM_HINT=auto joplin-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland &
+
+# Start 1Password in the background with Wayland disabled, window doesn't show with Wayland
+env ELECTRON_OZONE_PLATFORM_HINT=x11 1password --silent &

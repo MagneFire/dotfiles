@@ -1,0 +1,66 @@
+#!/bin/bash
+# Niri port of sway/scripts/workspace.
+# Usage: workspace <next|next-new|prev|begin|end|N>
+#
+# Niri's focus-workspace actions cover most cases natively; this wrapper exists
+# only to keep the sway-era key binding contract (workspace `next-new`, `end`).
+
+set -euo pipefail
+
+action="${1:-}"
+
+# Sort workspaces on the focused output by their index.
+mapfile -t WORKSPACES < <(
+  niri msg --json workspaces | jq -r '
+    [.[] | select(.is_focused or .output as $o | true)] as $all
+    | ($all | map(select(.is_focused))[0].output) as $focused_output
+    | [.[] | select(.output == $focused_output)]
+    | sort_by(.idx)
+    | .[] | .idx
+  '
+)
+
+# Index of the currently focused workspace within WORKSPACES.
+focused_idx=$(niri msg --json workspaces | jq -r '[.[] | select(.is_focused)][0].idx')
+
+# Find position of focused_idx in WORKSPACES array.
+position=0
+for i in "${!WORKSPACES[@]}"; do
+  if [[ "${WORKSPACES[$i]}" == "$focused_idx" ]]; then
+    position=$i
+    break
+  fi
+done
+
+case "$action" in
+  next)
+    target=$(( position + 1 ))
+    [[ $target -ge ${#WORKSPACES[@]} ]] && exit 0
+    niri msg action focus-workspace "${WORKSPACES[$target]}"
+    ;;
+  next-new)
+    # Niri keeps an empty workspace at the end; focus-workspace-down will land
+    # on it (or create the next one if needed).
+    niri msg action focus-workspace-down
+    ;;
+  prev)
+    target=$(( position - 1 ))
+    [[ $target -lt 0 ]] && exit 0
+    niri msg action focus-workspace "${WORKSPACES[$target]}"
+    ;;
+  begin)
+    niri msg action focus-workspace "${WORKSPACES[0]}"
+    ;;
+  end)
+    last=$(( ${#WORKSPACES[@]} - 1 ))
+    niri msg action focus-workspace "${WORKSPACES[$last]}"
+    ;;
+  ''|*[!0-9]*)
+    echo "usage: $0 <next|next-new|prev|begin|end|N>" >&2
+    exit 1
+    ;;
+  *)
+    # Numeric: focus workspace N (1-based, matching sway).
+    niri msg action focus-workspace "$action"
+    ;;
+esac

@@ -1,0 +1,58 @@
+#!/bin/bash
+# Insert a new (empty) workspace before/after the current one, then focus it.
+# Replaces sway/scripts/ws.py.
+#
+# Strategy: niri has no "rename workspace number" action like sway. But because
+# focus-workspace-down on the empty trailing workspace creates a new workspace
+# slot, and move-workspace-up/down reorders workspaces, we can compose them:
+#
+#   - "next": focus the empty trailing workspace, then move it up until it sits
+#             directly after the original current workspace.
+#   - "prev": same as "next" but stop one slot earlier.
+
+set -euo pipefail
+
+direction="${1:-next}"
+
+# Current focused workspace info.
+read -r focused_idx focused_output < <(
+  niri msg --json workspaces | jq -r '
+    [.[] | select(.is_focused)][0]
+    | "\(.idx) \(.output)"
+  '
+)
+
+# Number of workspaces on this output before we begin.
+ws_count_before=$(niri msg --json workspaces | jq --arg out "$focused_output" -r '
+  [.[] | select(.output == $out)] | length
+')
+
+# Walk to the empty trailing workspace (creates a new one if needed).
+last_idx=$(niri msg --json workspaces | jq --arg out "$focused_output" -r '
+  [.[] | select(.output == $out)] | sort_by(.idx) | last | .idx
+')
+niri msg action focus-workspace "$last_idx"
+
+# Confirm a new workspace got allocated; otherwise focus-workspace-down once more.
+ws_count_after=$(niri msg --json workspaces | jq --arg out "$focused_output" -r '
+  [.[] | select(.output == $out)] | length
+')
+if [[ "$ws_count_after" -le "$ws_count_before" ]]; then
+  niri msg action focus-workspace-down
+fi
+
+# Distance the new (trailing) workspace must travel up to reach its target slot.
+target_pos=$focused_idx
+case "$direction" in
+  next) target_pos=$(( focused_idx + 1 )) ;;
+  prev) target_pos=$focused_idx ;;
+  *) echo "usage: $0 <next|prev>" >&2; exit 1 ;;
+esac
+
+# Re-read state.
+new_idx=$(niri msg --json workspaces | jq -r '[.[] | select(.is_focused)][0].idx')
+
+while (( new_idx > target_pos )); do
+  niri msg action move-workspace-up
+  new_idx=$(niri msg --json workspaces | jq -r '[.[] | select(.is_focused)][0].idx')
+done

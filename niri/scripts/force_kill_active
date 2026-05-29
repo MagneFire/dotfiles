@@ -1,0 +1,14 @@
+#!/bin/bash
+# Niri port of sway/scripts/force_kill_active.
+# SIGKILL the process backing the focused window.
+
+set -euo pipefail
+
+pid=$(niri msg --json focused-window | jq -r '.pid // empty')
+
+if [[ -z "$pid" ]] || [[ "$pid" == "null" ]]; then
+  echo "no focused window or pid unknown" >&2
+  exit 1
+fi
+
+kill -9 "$pid"

@@ -1,0 +1,14 @@
+#!/bin/bash
+# Niri port of sway/scripts/workspace_new.
+# Move focus to a fresh empty workspace at the end of the current output.
+# Niri always keeps an empty trailing workspace, so we just walk to it.
+
+set -euo pipefail
+
+# Last workspace index on the focused output.
+last_idx=$(niri msg --json workspaces | jq -r '
+  [.[] | select(.is_focused)][0].output as $out
+  | [.[] | select(.output == $out)] | sort_by(.idx) | last | .idx
+')
+
+niri msg action focus-workspace "$last_idx"
