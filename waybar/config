@@ -12,7 +12,8 @@
     ],
     "modules-center": [
         "hyprland/workspaces",
-        "sway/workspaces"
+        "sway/workspaces",
+        "niri/workspaces"
     ],
     "modules-right": [
         "battery",
@@ -85,6 +86,17 @@
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "on-click": "activate",
         "sort-by-number": true
+    },
+    "niri/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "active": "",
+            "empty": ""
+        },
+        "on-scroll-up": "niri msg action focus-workspace-up",
+        "on-scroll-down": "niri msg action focus-workspace-down",
+        "all-outputs": false
     },
     "bluetooth": {
         "format": "",
@@ -183,6 +195,7 @@
     "output": "!eDP-1",
     "modules-center": [
         "hyprland/workspaces#secondary",
-        "sway/workspaces#secondary"
+        "sway/workspaces#secondary",
+        "niri/workspaces#secondary"
     ]
 }]
