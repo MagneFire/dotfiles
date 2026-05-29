@@ -18,8 +18,11 @@ swayosd-server &
 # Idle daemon (also handles lid via its config — see scripts/lid)
 hypridle &
 
-# Wallpaper and Window switcher daemon
-$HOME/.config/eww/scripts/daemon &
+# Wallpaper (background layer-shell surface, so niri's xray blur samples it).
+swaybg -i "$HOME/.config/eww/assets/wallpaper" -m fill &
+
+# Eww daemon (window switcher only — wallpaper is now swaybg's job)
+# $HOME/.config/eww/scripts/daemon &
 
 # Dynamic Monitor management
 shikane &
