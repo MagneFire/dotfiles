@@ -1,0 +1,79 @@
+
+// ---- BLUR ----
+// Global blur uses niri's defaults (passes 3, offset 3, noise 0.02, saturation 1.5).
+// Per-app/layer rules below enable blur on transparent surfaces. The window itself
+// must be semitransparent for the blur to be visible.
+
+window-rule {
+    match app-id="^kitty$"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Layer-shell surfaces (waybar, swaync) are transparent.
+layer-rule {
+    match namespace="^waybar$"
+    background-effect {
+        blur true
+    }
+}
+
+// swaync creates two layer surfaces: `swaync-control-center` (the sidebar
+// panel) and `swaync-notification-window` (the actual notification popup).
+// Match only the notification — blurring the panel makes its full anchored
+// rectangle visible as a halo even when transparent.
+layer-rule {
+    match namespace="^swaync-notification-window$"
+    geometry-corner-radius 12
+}
+
+// ---- WINDOW RULES ----
+// Ported from sway/config.d/window-rules.conf and scroll/config.d/window-rules.conf.
+
+// scroll: idle inhibit for any fullscreen window — handled implicitly. Niri has
+// no per-rule idle-inhibit action; apps that go fullscreen request inhibition
+// via the wlr-idle-inhibit-unstable-v1 protocol and swayidle/hypridle respect
+// it. No rule needed.
+
+// Picture-in-Picture: float + always-on-top
+window-rule {
+    match title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Gnome calculator: float, fixed size, centered
+window-rule {
+    match app-id="^org.gnome.Calculator$"
+    open-floating true
+    default-column-width { fixed 648; }
+    default-window-height { fixed 688; }
+}
+
+// Ghidra: float ancillary windows (non-CodeBrowser, non-main)
+window-rule {
+    match app-id="ghidra-Ghidra"
+    exclude title="^(CodeBrowser|Ghidra).*"
+    open-floating true
+}
+
+window-rule {
+    match app-id="^albert$"
+    open-floating true
+    border {
+        off
+    }
+    geometry-corner-radius 18
+
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// sdl-freerdp3: explicitly tile (sway had `floating disable`)
+window-rule {
+    match app-id="^sdl-freerdp3$"
+    open-floating false
+}

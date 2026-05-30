@@ -1,0 +1,167 @@
+binds {
+    // ---- Functional ----
+    Mod+Q { close-window; }
+    Mod+Shift+Q { spawn "sh" "-c" "~/.config/niri/scripts/force_kill_active"; }
+    Mod+Shift+E { quit; }
+
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    // sway "floating toggle" → niri's tile/float toggle
+    Mod+Ctrl+F { toggle-window-floating; }
+
+    // sway J: layout toggle split — no niri equivalent (no nested splits).
+    // Closest analogue: consume/expel windows in/out of columns.
+    Mod+J { consume-or-expel-window-left; }
+    Mod+K { consume-or-expel-window-right; }
+
+    // ---- Focus / Movement ----
+    Mod+Left  { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up    { focus-window-up; }
+    Mod+Down  { focus-window-down; }
+
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+Up    { move-window-up; }
+    Mod+Shift+Down  { move-window-down; }
+
+    // sway Ctrl+Arrow: move container to output + focus that output.
+    // niri's move-column-to-monitor-* moves focus along with the column, so
+    // no separate focus-monitor-* call is needed (and not allowed: one action
+    // per binding).
+    Mod+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Ctrl+Up    { move-column-to-monitor-up; }
+    Mod+Ctrl+Down  { move-column-to-monitor-down; }
+
+    // sway Alt+Arrow: move whole workspace to output
+    Mod+Alt+Left  { move-workspace-to-monitor-left; }
+    Mod+Alt+Right { move-workspace-to-monitor-right; }
+    Mod+Alt+Up    { move-workspace-to-monitor-up; }
+    Mod+Alt+Down  { move-workspace-to-monitor-down; }
+    Mod+Alt+Page_Up   { move-workspace-to-monitor-up; }
+    Mod+Alt+Page_Down { move-workspace-to-monitor-down; }
+
+    // ---- Workspaces ----
+    // Niri workspaces flow vertically per output; we keep numeric keys.
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+
+    // sway Page_Up / Page_Down + Z/X workspace cycling
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Page_Up   { focus-workspace-up; }
+    Mod+Z         { focus-workspace-up; }
+    Mod+X         { focus-workspace-down; }
+
+    // sway: insert new workspace adjacent to current
+    Mod+Shift+Z { spawn "sh" "-c" "~/.config/niri/scripts/insert_workspace prev"; }
+    Mod+Shift+X { spawn "sh" "-c" "~/.config/niri/scripts/insert_workspace next"; }
+    Mod+A       { spawn "sh" "-c" "~/.config/niri/scripts/workspace_new"; }
+
+    Mod+Home { focus-workspace 1; }
+    // sway "end": go to empty workspace at the end. Niri always keeps an empty
+    // workspace last, so focus-workspace-down repeatedly via this script:
+    Mod+End  { spawn "sh" "-c" "~/.config/niri/scripts/workspace end"; }
+
+    // sway "back_and_forth" → niri's previous-workspace
+    Mod+BackSpace { focus-workspace-previous; }
+
+    // sway: move container to next/prev workspace on this output
+    Mod+Shift+Page_Down { move-column-to-workspace-down; }
+    Mod+Shift+Page_Up   { move-column-to-workspace-up; }
+    // sway: "Shift+Right/Left moves window to next/prev workspace" — collides with
+    // move-column-left/right above. We keep the column-move semantics on Shift+Arrow
+    // and route the workspace-move feature to a dedicated key:
+    Mod+Shift+BracketLeft  { move-column-to-workspace-up; }
+    Mod+Shift+BracketRight { move-column-to-workspace-down; }
+
+    // ---- Scroll-style sizing ----
+    // scroll: cycle_size h prev / next
+    Mod+Minus { switch-preset-column-width-back; }
+    Mod+Equal { switch-preset-column-width; }
+    Mod+Shift+Minus { switch-preset-window-height-back; }
+    Mod+Shift+Equal { switch-preset-window-height; }
+
+    // scroll: align center (column horizontally centered on screen)
+    Mod+Shift+A { center-column; }
+
+    // scroll: fit_size analogues — niri has only "expand to fill available width".
+    Mod+Shift+W { expand-column-to-available-width; }
+
+    // scroll: overview
+    Mod+Tab { toggle-overview; }
+
+    // ---- Media / Brightness (swayosd works under niri) ----
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "raise"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "lower"; }
+    XF86AudioMute        allow-when-locked=true { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "swayosd-client" "--input-volume" "mute-toggle"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "swayosd-client" "--brightness" "raise"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "swayosd-client" "--brightness" "lower"; }
+    XF86AudioPlay  allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPause allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPrev  allow-when-locked=true { spawn "playerctl" "previous"; }
+    XF86AudioNext  allow-when-locked=true { spawn "playerctl" "next"; }
+
+    // ---- Helpers ----
+    Mod+Space      { spawn "sh" "-c" "echo -n '[\"show\", \"apps \"]' | socat - ~/.cache/albert/ipc_socket"; }
+    Mod+L          { spawn "loginctl" "lock-session"; }
+    Mod+D          { spawn "sh" "-c" "$HOME/.config/hypr/scripts/do_not_disturb"; }
+    Mod+P          { spawn "sh" "-c" "echo -n '[\"show\", \"system \"]' | socat - ~/.cache/albert/ipc_socket"; }
+    Mod+E          { spawn "sh" "-c" "echo -n '[\"show\", \"emoji \"]' | socat - ~/.cache/albert/ipc_socket"; }
+    Mod+N          { spawn "sh" "-c" "$HOME/.config/hypr/scripts/waybar-toggle"; }
+    Mod+Shift+N    { spawn "swaync-client" "-t" "-sw"; }
+
+    // sway Alt+Tab window switcher (eww-based) — left as spawn so the user can
+    // wire it up to a niri-compatible launcher (e.g. fuzzel --window-mode).
+    Alt+Tab { spawn "sh" "-c" "fuzzel --list-launch-prefix='niri msg action focus-window --id ' --show-actions"; }
+
+    // ---- Screenshots ----
+    // Niri ships its own screenshot UI.
+    Print           { screenshot; }
+    Shift+Print     { screenshot-screen; }
+    Mod+Print       { screenshot-window; }
+    Alt+Print       { spawn "sh" "-c" "f=$(mktemp --suffix=.png); grim -g \"$(slurp)\" \"$f\" && tesseract \"$f\" - | wl-copy && rm \"$f\""; }
+    Ctrl+Print      { spawn "hyprpicker" "-a"; }
+
+    // ---- Apps ----
+    Mod+Return       { spawn "kitty"; }
+    Mod+KP_Enter     { spawn "kitty"; }
+    Mod+T            { spawn "kitty"; }
+    Mod+B            { spawn "blueman-manager"; }
+    Mod+V            { spawn "pavucontrol"; }
+    Mod+M            { spawn "nwg-displays"; }
+    Mod+W            { spawn "zen-browser"; }
+    Mod+H            { spawn "dolphin"; }
+    Mod+C            { spawn "sh" "-c" "echo -n '[\"show\", \"code \"]' | socat - ~/.cache/albert/ipc_socket"; }
+    Mod+R            { spawn "gnome-calculator"; }
+
+    // ---- Mouse / scroll-style mouse bindings ----
+    // sway whole-window Mod+button{6,7}: workspace prev/next via side buttons.
+    // Niri binds mouse buttons in the same `binds` block:
+    Mod+MouseBack    { focus-workspace-up; }
+    Mod+MouseForward { focus-workspace-down; }
+
+    // sway scroll wheel resize equivalents
+    Mod+WheelScrollDown { switch-preset-column-width; }
+    Mod+WheelScrollUp   { switch-preset-column-width; }
+    Mod+Shift+WheelScrollDown { switch-preset-window-height; }
+    Mod+Shift+WheelScrollUp   { switch-preset-window-height; }
+}

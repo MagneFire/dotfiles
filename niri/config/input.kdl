@@ -1,0 +1,20 @@
+
+input {
+    keyboard {
+        xkb {
+            options "compose:ralt"
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+        dwt
+        natural-scroll
+        middle-emulation
+    }
+
+    // Focus-on-window-activation analogue: niri has no global setting; it always raises
+    // urgent windows briefly. The custom `focus_on_urgent` script is no longer needed.
+    focus-follows-mouse
+}

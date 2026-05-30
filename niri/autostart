@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-# Niri port of sway/autostart. Spawned once at session start.
 
 config=$HOME/.config/hypr
 scripts=$config/scripts
@@ -15,14 +14,11 @@ printf "[D-BUS Service]\nName=org.kde.kded6\nExec=/bin/false" > "$HOME/.local/sh
 # GNOME like OSD for brightness and volume
 swayosd-server &
 
-# Idle daemon (also handles lid via its config — see scripts/lid)
+# Idle daemon
 hypridle &
 
-# Wallpaper (background layer-shell surface, so niri's xray blur samples it).
+# Wallpaper
 swaybg -i "$HOME/.config/eww/assets/wallpaper" -m fill &
-
-# Eww daemon (window switcher only — wallpaper is now swaybg's job)
-# $HOME/.config/eww/scripts/daemon &
 
 # Dynamic Monitor management
 shikane &
@@ -37,13 +33,6 @@ $scripts/waybar &
 
 ## Gnome authentication/keyring
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-
-# Audio systray icon
-pasystray --notify=none &
-
-# Touchpad gestures — fusuma config should call `niri msg action ...` instead
-# of `swaymsg` for gesture-driven workspace switching.
-fusuma &
 
 # NetworkManager applet
 nm-applet &

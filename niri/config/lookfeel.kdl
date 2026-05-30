@@ -1,0 +1,44 @@
+layout {
+    preset-column-widths {
+        proportion 0.333333
+        proportion 0.5
+        proportion 0.666667
+        proportion 1.0
+    }
+
+    preset-window-heights {
+        proportion 0.333333
+        proportion 0.5
+        proportion 0.666667
+        proportion 1.0
+    }
+
+    default-column-width { proportion 0.5; }
+
+    gaps 5
+
+    always-center-single-column
+
+    border {
+        on
+        width 2
+        active-color "#c3dde7"
+        inactive-color "#928374"
+        urgent-color "#e78a4e"
+    }
+
+    focus-ring {
+        off
+    }
+}
+
+prefer-no-csd
+
+cursor {
+    hide-when-typing
+}
+
+// Disable hotkey overlay
+hotkey-overlay {
+    skip-at-startup
+}
