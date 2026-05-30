@@ -1,9 +1,3 @@
-
-// ---- BLUR ----
-// Global blur uses niri's defaults (passes 3, offset 3, noise 0.02, saturation 1.5).
-// Per-app/layer rules below enable blur on transparent surfaces. The window itself
-// must be semitransparent for the blur to be visible.
-
 window-rule {
     match app-id="^kitty$"
     background-effect {
@@ -28,14 +22,6 @@ layer-rule {
     match namespace="^swaync-notification-window$"
     geometry-corner-radius 12
 }
-
-// ---- WINDOW RULES ----
-// Ported from sway/config.d/window-rules.conf and scroll/config.d/window-rules.conf.
-
-// scroll: idle inhibit for any fullscreen window — handled implicitly. Niri has
-// no per-rule idle-inhibit action; apps that go fullscreen request inhibition
-// via the wlr-idle-inhibit-unstable-v1 protocol and swayidle/hypridle respect
-// it. No rule needed.
 
 // Picture-in-Picture: float + always-on-top
 window-rule {
@@ -72,7 +58,16 @@ window-rule {
     }
 }
 
-// sdl-freerdp3: explicitly tile (sway had `floating disable`)
+window-rule {
+    match app-id="^zen$"
+    draw-border-with-background false
+
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 window-rule {
     match app-id="^sdl-freerdp3$"
     open-floating false
