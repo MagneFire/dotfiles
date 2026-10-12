@@ -7,8 +7,12 @@ scripts=$config/scripts
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_CURRENT_DESKTOP=sway
 
+systemctl --user start sway-session.target
+
 # Create dummy service to avoid kded6 from breaking the tray
 printf "[D-BUS Service]\nName=org.kde.kded6\nExec=/bin/false" > $HOME/.local/share/dbus-1/services/org.kde.kded6.service
+
+ibus-daemon --replace --daemonize --xim
 
 # GNOME like OSD for brightness and volume
 swayosd-server &
@@ -16,14 +20,19 @@ swayosd-server &
 # Idle daemon
 hypridle &
 
+# Listen for clipboard changes
+wl-paste --watch cliphist store &
+
 # Wallpaper and Window switcher daemon
-$HOME/.config/eww/scripts/daemon &
+# $HOME/.config/eww/scripts/daemon &
+swaybg -i  ~/.config/eww/assets/wallpaper -m fill &
+#swaybg -i  /usr/share/backgrounds/budgie/high-trestle-trail.jxl -m fill &
 
 # Dynamic Monitor management
 shikane &
 
 # Sway Notification Center
-swaync &
+# swaync &
 
 # Systray compatibility for X apps (Wine)
 xembedsniproxy &
@@ -51,7 +60,7 @@ nm-applet &
 albert &
 
 # Enable auto/smart tiling
-autotiling-rs &
+autotiling &
 
 # Dolphin file associations fix
 kbuildsycoca6
@@ -61,3 +70,15 @@ xhost +SI:localuser:root
 
 # Lyrics server
 lrcsnc &
+
+# Start Slack minimized (--startup)
+flatpak run --socket=wayland  com.slack.Slack --ozone-platform-hint=auto --startup &
+# flatpak run --socket=wayland  com.slack.Slack --ozone-platform-hint=x11 --startup &
+
+flatpak run --env=ELECTRON_OZONE_PLATFORM_HINT=auto --socket=wayland  com.github.IsmaelMartinez.teams_for_linux --electronCLIFlags="--ozone-platform-hint=auto" --minimized &
+
+# flatpak run --env=ELECTRON_OZONE_PLATFORM_HINT=auto --socket=wayland  net.cozic.joplin_desktop --enable-features=UseOzonePlatform --ozone-platform=wayland --disable-gpu &
+env ELECTRON_OZONE_PLATFORM_HINT=auto joplin-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland  &
+
+# Start 1Password in the background with Wayland disabled, window doesn't show with Wayland
+env ELECTRON_OZONE_PLATFORM_HINT=x11 1password --silent &
