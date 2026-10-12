@@ -12,7 +12,7 @@ systemctl --user start sway-session.target
 # Create dummy service to avoid kded6 from breaking the tray
 printf "[D-BUS Service]\nName=org.kde.kded6\nExec=/bin/false" > $HOME/.local/share/dbus-1/services/org.kde.kded6.service
 
-ibus-daemon --replace --daemonize --xim
+GDK_BACKEND=x11 ibus-daemon --replace --daemonize --xim
 
 # GNOME like OSD for brightness and volume
 swayosd-server &
