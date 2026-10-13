@@ -2,7 +2,16 @@
 
 CONFIG_FILES="$HOME/.config/waybar/config $HOME/.config/waybar/style.css"
 
-trap "killall waybar" EXIT
+trap "killall waybar; pkill -P $$" EXIT
+
+# Waybar can lose a bar when an output reconnects while sway is still busy
+# with it, so reload once a burst of output events has settled.
+if [ -n "$SWAYSOCK" ]; then
+    swaymsg -m -t subscribe '["output"]' | while read -r _; do
+        while read -r -t 2 _; do :; done
+        kill -SIGUSR2 `pgrep -x -n waybar`
+    done &
+fi
 
 while true; do
     waybar &
