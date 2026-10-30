@@ -9,4 +9,8 @@ fi
 
 echo "Suspending"
 
-~/.config/hypr/scripts/suspend
+# Give hyprlock a moment to show before the screen goes off
+loginctl lock-session
+sleep 1
+
+systemctl sleep
