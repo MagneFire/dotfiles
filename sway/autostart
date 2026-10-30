@@ -24,9 +24,6 @@ swayidle -w \
 # Listen for clipboard changes
 wl-paste --watch cliphist store &
 
-# Wallpaper
-swaybg -i ~/.config/sway/wallpaper -m fill &
-
 # Dynamic Monitor management
 shikane &
 
