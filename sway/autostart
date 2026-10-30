@@ -24,8 +24,8 @@ swayidle -w \
 # Listen for clipboard changes
 wl-paste --watch cliphist store &
 
-# Wallpaper and Window switcher daemon
-$HOME/.config/eww/scripts/daemon &
+# Wallpaper
+swaybg -i ~/.config/sway/wallpaper -m fill &
 
 # Dynamic Monitor management
 shikane &
