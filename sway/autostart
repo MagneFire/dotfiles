@@ -30,9 +30,6 @@ swaybg -i ~/.config/sway/wallpaper -m fill &
 # Dynamic Monitor management
 shikane &
 
-# Systray compatibility for X apps (Wine)
-xembedsniproxy &
-
 $HOME/.config/waybar/scripts/launch &
 
 # Focus on window activation
