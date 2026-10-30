@@ -8,7 +8,7 @@ function Help() {
     cat <<EOF
 Usage: swayshot [options ..] [-m [mode] ..] -- [command]
 
-Hyprshot is an utility to easily take screenshot in Hyprland using your mouse.
+Swayshot is a utility to easily take screenshots in sway using your mouse.
 
 It allows taking screenshots of windows, regions and monitors which are saved to a folder of your choosing and copied to your clipboard.
 
@@ -39,7 +39,7 @@ Modes:
                 (you must use --mode again with the intended selection)
   OUTPUT_NAME   take screenshot of output with OUTPUT_NAME
                 (you must use --mode again with the intended selection)
-                (you can get this from \`hyprctl monitors\`)
+                (you can get this from \`swaymsg -t get_outputs\`)
 EOF
 }
 
@@ -216,9 +216,9 @@ function grab_active_output() {
 }
 
 function grab_selected_output() {
-    local monitor=`hyprctl -j monitors | jq -r '.[] | select(.name == "'$(echo $1)'")'`
+    local monitor=`swaymsg -t get_outputs | jq -r '.[] | select(.name == "'$(echo $1)'")'`
     Print "Capturing: %s\n" "${1}"
-    echo $monitor | jq -r '"\(.x),\(.y) \(.width/.scale|round)x\(.height/.scale|round)"'
+    echo $monitor | jq -r '"\(.rect.x),\(.rect.y) \(.rect.width)x\(.rect.height)"'
 }
 
 function grab_region() {
@@ -270,7 +270,7 @@ function parse_mode() {
             CURRENT=1
             ;;
         *)
-            hyprctl monitors -j | jq -re '.[] | select(.name == "'$(echo $mode)'")' &>/dev/null
+            swaymsg -t get_outputs | jq -re '.[] | select(.name == "'$(echo $mode)'")' &>/dev/null
             SELECTED_MONITOR=$mode
             ;;
     esac
