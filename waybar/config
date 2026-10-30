@@ -11,7 +11,6 @@
         "custom/lrcsnc"
     ],
     "modules-center": [
-        "hyprland/workspaces",
         "sway/workspaces"
     ],
     "modules-right": [
@@ -75,17 +74,6 @@
         "on-click": "activate",
         "sort-by-number": true
     },
-    "hyprland/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "default": "",
-            "active": ""
-        },
-        "on-scroll-up": "hyprctl dispatch workspace e+1",
-        "on-scroll-down": "hyprctl dispatch workspace e-1",
-        "on-click": "activate",
-        "sort-by-number": true
-    },
     "bluetooth": {
         "format": "",
         "on-click": "blueman-manager"
@@ -101,11 +89,6 @@
             "type": "audio-in"
         }
         ]
-    },
-    "custom/maximized": {
-        "format": "{}",
-        "return-type": "json",
-        "exec": "~/.config/waybar/scripts/maximized.sh"
     },
     "custom/notifications": {
         "format": "{}",
@@ -182,7 +165,6 @@
     "name": "secondary-bar",
     "output": "!eDP-1",
     "modules-center": [
-        "hyprland/workspaces#secondary",
         "sway/workspaces#secondary"
     ]
 }]
