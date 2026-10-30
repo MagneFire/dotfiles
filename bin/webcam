@@ -5,11 +5,16 @@ if ! command -v zenity &> /dev/null; then
     exit 1
 fi
 
-# Build list: real devices + custom option
+# Build list: capture devices + custom option
 choices=()
 while IFS= read -r dev; do
+    # Skip metadata and output nodes; only the device's own caps say if it captures video
+    if command -v v4l2-ctl &> /dev/null && \
+        ! v4l2-ctl -d "$dev" --info 2>/dev/null | sed -n '/Device Caps/,$p' | grep -q 'Video Capture'; then
+        continue
+    fi
     choices+=("$dev")
-done < <(ls /dev/video* 2>/dev/null | sort)
+done < <(ls /dev/video* 2>/dev/null | sort -V)
 
 # Always add the manual entry at the end
 choices+=("Enter custom device...")
