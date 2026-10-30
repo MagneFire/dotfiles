@@ -1,7 +1,9 @@
 package bass
 package colored-man-pages
 package export
+package foreign-env
 package https://github.com/jhillyerd/plugin-git
+package nvm
 package z
 theme bobthefish
 theme default
