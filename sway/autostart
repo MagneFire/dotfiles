@@ -59,3 +59,6 @@ kbuildsycoca6
 
 # Fix applications such a GParted (X11 root apps under wayland)
 xhost +SI:localuser:root
+
+# Machine-specific apps
+[ -x $HOME/.config/sway/autostart.local ] && $HOME/.config/sway/autostart.local &
