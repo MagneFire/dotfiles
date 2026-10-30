@@ -1,3 +1,0 @@
-(include "./yuck/windows/desktop.yuck")
-(include "./yuck/windows/desktop-clock.yuck")
-(include "./yuck/windows/tab.yuck")
