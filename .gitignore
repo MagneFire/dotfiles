@@ -1,0 +1,12 @@
+# Device-specific
+shikane/
+sway/outputs*
+sway/wallpaper
+sway/autostart.local
+fish/fish_variables
+
+# Leftovers
+nohup.out
+*.bak
+*-back
+*copy*
