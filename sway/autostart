@@ -1,8 +1,5 @@
 #!/usr/bin/bash
 
-config=$HOME/.config/hypr
-scripts=$config/scripts
-
 # Fix potential slow startup
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_CURRENT_DESKTOP=sway
@@ -32,8 +29,7 @@ shikane &
 # Systray compatibility for X apps (Wine)
 xembedsniproxy &
 
-$scripts/waybar &
-# $scripts/restart-eww &
+$HOME/.config/waybar/scripts/launch &
 
 # Focus on window activation
 $HOME/.config/sway/scripts/focus_on_urgent &
