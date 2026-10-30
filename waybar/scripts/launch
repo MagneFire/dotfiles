@@ -14,7 +14,12 @@ if [ -n "$SWAYSOCK" ]; then
 fi
 
 while true; do
-    waybar &
+    # A module that fails to subscribe to sway IPC stays disabled, leaving an
+    # empty bar, so reload again once the failures have settled.
+    waybar 2>&1 | tee /dev/stderr | grep --line-buffered 'Unable to subscribe ipc event' | while read -r _; do
+        while read -r -t 2 _; do :; done
+        pkill -USR2 -xf waybar
+    done &
     inotifywait -e create,modify $CONFIG_FILES
     pkill -xf waybar
 done
