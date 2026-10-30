@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Fetch systemd boot chart (SVG) and blame output from a remote host.
+# usage: ./boot-svg.sh [user@]host [outdir]
+set -euo pipefail
+
+[[ $# -ge 1 ]] || { echo "usage: $0 [user@]host [outdir]" >&2; exit 1; }
+
+HOST=$1
+OUTDIR=${2:-.}
+NAME=${HOST##*@}
+STAMP=$(date +%Y%m%d-%H%M%S)
+
+mkdir -p "$OUTDIR"
+SVG="$OUTDIR/boot-$NAME-$STAMP.svg"
+BLAME="$OUTDIR/blame-$NAME-$STAMP.txt"
+
+# systemd-analyze writes to stdout, so we just pipe it back over ssh — no scp needed.
+sshu "$HOST" systemd-analyze plot  > "$SVG"
+sshu "$HOST" systemd-analyze blame > "$BLAME"
+
+echo "Boot chart: $SVG"
+echo "Blame:      $BLAME"
+echo
+sshu "$HOST" systemd-analyze time
