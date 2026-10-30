@@ -55,7 +55,7 @@ nm-applet &
 albert &
 
 # Enable auto/smart tiling
-autotiling-rs &
+autotiling &
 
 # Dolphin file associations fix
 kbuildsycoca6
