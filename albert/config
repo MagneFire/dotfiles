@@ -9,25 +9,48 @@ terminal=kitty
 [calculator_qalculate]
 enabled=true
 
+[clipboard]
+enabled=false
+trigger="cp "
+
 [python]
+enabled=true
+
+[python.clipboard]
 enabled=true
 
 [python.emoji]
 enabled=true
 global_handler_enabled=false
 
+[python.jetbrains_projects]
+enabled=true
+match_path=false
+trigger="jb "
+
 [python.python_eval]
 enabled=true
 trigger="py "
 
-[python.vscode_projects]
+[python.test]
 enabled=true
 priorityPMName=1
 priorityPMPath=5
 priorityPMTag=10
 priorityRecent=15
 recentEnabled=true
+
+[python.vscode_projects]
+enabled=false
+priorityPMName=1
+priorityPMPath=5
+priorityPMTag=10
+priorityRecent=15
+recentEnabled=true
 trigger="code "
+
+[python.window_switcher]
+enabled=true
 
 [ssh]
 enabled=true
