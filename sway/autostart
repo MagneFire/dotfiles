@@ -14,8 +14,12 @@ GDK_BACKEND=x11 ibus-daemon --replace --daemonize --xim
 # GNOME like OSD for brightness and volume
 swayosd-server &
 
-# Idle daemon
-hypridle &
+# Idle daemon, dims the screen and locks before suspend
+swayidle -w \
+    timeout 150 'brightnessctl -s set 10' resume 'brightnessctl -r' \
+    lock 'pidof hyprlock || hyprlock' \
+    before-sleep 'loginctl lock-session' \
+    after-resume 'swaymsg "output * power on"' &
 
 # Listen for clipboard changes
 wl-paste --watch cliphist store &
