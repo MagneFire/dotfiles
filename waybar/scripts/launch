@@ -2,10 +2,19 @@
 
 CONFIG_FILES="$HOME/.config/waybar/config $HOME/.config/waybar/style.css"
 
-trap "killall waybar" EXIT
+trap "pkill -xf waybar; pkill -P $$" EXIT
+
+# Waybar can lose a bar when an output reconnects while sway is still busy
+# with it, so reload once a burst of output events has settled.
+if [ -n "$SWAYSOCK" ]; then
+    swaymsg -m -t subscribe '["output"]' | while read -r _; do
+        while read -r -t 2 _; do :; done
+        pkill -USR2 -xf waybar
+    done &
+fi
 
 while true; do
     waybar &
     inotifywait -e create,modify $CONFIG_FILES
-    kill `pgrep -x -n waybar`
+    pkill -xf waybar
 done
