@@ -29,9 +29,6 @@ $HOME/.config/eww/scripts/daemon &
 # Dynamic Monitor management
 shikane &
 
-# Sway Notification Center
-swaync &
-
 # Systray compatibility for X apps (Wine)
 xembedsniproxy &
 
